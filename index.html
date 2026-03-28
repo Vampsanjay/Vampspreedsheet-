@@ -8,57 +8,33 @@
     <style>
         :root { --bg: #0f0f0f; --card: #1a1a2e; --accent: #00d4ff; --text: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; padding-bottom: 50px; }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
         header { position: sticky; top: 0; background: rgba(15,15,15,0.9); backdrop-filter: blur(10px); padding: 15px 5%; border-bottom: 1px solid #333; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.2rem; font-weight: 700; }
-        .search-box { background: #252538; border: 1px solid #444; padding: 8px 15px; border-radius: 8px; color: white; width: 160px; outline: none; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; max-width: 1200px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
         .card { background: var(--card); border-radius: 12px; padding: 10px; border: 1px solid #333; text-align: center; }
-        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; margin-bottom: 8px; background: #111; display: block; }
-        .card h3 { font-size: 0.75rem; font-weight: 500; height: 32px; overflow: hidden; margin-bottom: 4px; line-height: 1.2; }
-        .price { color: var(--accent); font-weight: 700; font-size: 0.9rem; }
-        @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; margin-bottom: 8px; }
+        .price { color: var(--accent); font-weight: 700; }
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">VampSpreadsheet</div>
-        <input type="text" id="search" class="search-box" placeholder="Search...">
-    </header>
+    <header><div class="logo">VampSpreadsheet</div></header>
     <main class="grid" id="grid"></main>
 
     <script>
-        // Using a more robust image caching proxy (wsrv.nl)
         const products = [
-            { n: "AJ1 Dark Mocha", p: 43.38, i: "https://wsrv.nl/?url=img.mulebuy.com/images/1.jpg&w=300&output=webp" },
-            { n: "TS AJ1 Mocha", p: 44.31, i: "https://wsrv.nl/?url=img.mulebuy.com/images/2.jpg&w=300&output=webp" },
-            { n: "TS AJ1 Fragment", p: 61.34, i: "https://wsrv.nl/?url=img.mulebuy.com/images/3.jpg&w=300&output=webp" },
-            { n: "TS Low Rev Mocha", p: 53.68, i: "https://wsrv.nl/?url=img.mulebuy.com/images/4.jpg&w=300&output=webp" },
-            { n: "TS Low Olive", p: 35.12, i: "https://wsrv.nl/?url=img.mulebuy.com/images/5.jpg&w=300&output=webp" },
-            { n: "TS Low Fragment", p: 53.68, i: "https://wsrv.nl/?url=img.mulebuy.com/images/6.jpg&w=300&output=webp" },
-            { n: "TS 1 Low Phantom", p: 27.60, i: "https://wsrv.nl/?url=img.mulebuy.com/images/7.jpg&w=300&output=webp" },
-            { n: "TS PlayStation Dunk", p: 60.58, i: "https://wsrv.nl/?url=img.mulebuy.com/images/8.jpg&w=300&output=webp" },
-            { n: "TS Jumpman Jack", p: 47.08, i: "https://wsrv.nl/?url=img.mulebuy.com/images/9.jpg&w=300&output=webp" },
-            { n: "Dunk Low TS", p: 44.31, i: "https://wsrv.nl/?url=img.mulebuy.com/images/10.jpg&w=300&output=webp" }
+            { n: "AJ1 Dark Mocha", p: 43.38, i: "https://i.imgur.com/uRk0T8t.jpeg" },
+            { n: "TS AJ1 Mocha", p: 44.31, i: "https://i.imgur.com/8N69V6G.jpeg" },
+            { n: "AJ1 Retro High Shadow", p: 38.34, i: "https://i.imgur.com/R3Z5Lz6.jpeg" },
+            { n: "TS Low Reverse Mocha", p: 53.68, i: "https://i.imgur.com/mE8G4h7.jpeg" }
         ];
 
-        const grid = document.getElementById('grid');
-        const render = (data) => {
-            grid.innerHTML = data.map(p => `
-                <div class="card">
-                    <img src="${p.i}" loading="lazy" alt="${p.n}">
-                    <h3>${p.n}</h3>
-                    <div class="price">$${p.p.toFixed(2)}</div>
-                </div>
-            `).join('');
-        };
-
-        document.getElementById('search').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            render(products.filter(p => p.n.toLowerCase().includes(term)));
-        });
-
-        render(products);
+        document.getElementById('grid').innerHTML = products.map(p => `
+            <div class="card">
+                <img src="${p.i}">
+                <h3>${p.n}</h3>
+                <div class="price">$${p.p.toFixed(2)}</div>
+            </div>
+        `).join('');
     </script>
 </body>
 </html>
