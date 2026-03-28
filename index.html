@@ -3,39 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VampSpreadsheet</title>
+    <title>VampSpreadsheet — Shoe Catalog</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0f0f0f; --card: #1a1a2e; --accent: #00d4ff; --text: #ffffff; }
+        :root { --bg: #0f0f0f; --card: #1a1a2e; --accent: #00d4ff; --text: #ffffff; --muted: #94a3b8; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
-        header { position: sticky; top: 0; background: rgba(15,15,15,0.9); backdrop-filter: blur(10px); padding: 15px 5%; border-bottom: 1px solid #333; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
-        .card { background: var(--card); border-radius: 12px; padding: 10px; border: 1px solid #333; text-align: center; }
-        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; margin-bottom: 8px; }
-        .price { color: var(--accent); font-weight: 700; }
+        header { position: sticky; top: 0; background: rgba(15,15,15,0.8); backdrop-filter: blur(10px); padding: 1rem 5%; border-bottom: 1px solid #333; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.4rem; font-weight: 700; color: var(--text); }
+        .search-box { background: #252538; border: 1px solid #444; padding: 0.5rem 1rem; border-radius: 8px; color: white; width: 200px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .card { background: var(--card); border-radius: 12px; padding: 10px; border: 1px solid transparent; transition: 0.3s; text-align: center; }
+        .card:hover { border-color: var(--accent); transform: translateY(-3px); }
+        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; margin-bottom: 8px; background: #111; }
+        .card h3 { font-size: 0.85rem; font-weight: 500; height: 35px; overflow: hidden; margin-bottom: 5px; color: var(--text); }
+        .price { color: var(--accent); font-weight: 700; font-size: 1rem; }
+        footer { text-align: center; padding: 40px; color: var(--muted); font-size: 0.8rem; }
     </style>
 </head>
 <body>
-    <header><div class="logo">VampSpreadsheet</div></header>
+    <header>
+        <div class="logo">VampSpreadsheet</div>
+        <input type="text" id="search" class="search-box" placeholder="Search shoes...">
+    </header>
     <main class="grid" id="grid"></main>
+    <footer>VampSpreadsheet &copy; 2026 • Reference Only</footer>
 
     <script>
-                const products = [
-            { n: "AJ1 Dark Mocha", p: 43.38, i: "https://postimg.cc/sQbNK47x"
-            { n: "TS AJ1 Mocha", p: 44.31, i: "https://i.postimg.cc/9FmYvXf9/ts-mocha.jpg" },
-            { n: "AJ1 Retro High Shadow", p: 38.34, i: "https://i.postimg.cc/bvj0vS4j/shadow.jpg" },
-            { n: "TS Low Reverse Mocha", p: 53.68, i: "https://i.postimg.cc/mD8z0H0z/rev-mocha.jpg" }
+        const products = [
+            { n: "AJ1 Dark Mocha", p: 43.38, i: "https://img.mulebuy.com/images/1.jpg" },
+            { n: "TS AJ1 Mocha", p: 44.31, i: "https://img.mulebuy.com/images/2.jpg" },
+            { n: "TS AJ1 Fragment", p: 61.34, i: "https://img.mulebuy.com/images/3.jpg" },
+            { n: "TS Low Rev Mocha", p: 53.68, i: "https://img.mulebuy.com/images/4.jpg" },
+            { n: "TS Low Olive", p: 35.12, i: "https://img.mulebuy.com/images/5.jpg" },
+            { n: "TS Low Fragment", p: 53.68, i: "https://img.mulebuy.com/images/6.jpg" },
+            { n: "TS 1 Low Phantom", p: 27.60, i: "https://img.mulebuy.com/images/7.jpg" },
+            { n: "TS PlayStation Dunk", p: 60.58, i: "https://img.mulebuy.com/images/8.jpg" },
+            { n: "TS Jumpman Jack", p: 47.08, i: "https://img.mulebuy.com/images/9.jpg" },
+            { n: "Dunk Low TS", p: 44.31, i: "https://img.mulebuy.com/images/10.jpg" },
+            { n: "AJ1 Chicago L&F", p: 38.34, i: "https://img.mulebuy.com/images/11.jpg" },
+            { n: "AJ1 Turbo Green", p: 38.34, i: "https://img.mulebuy.com/images/12.jpg" },
+            { n: "AJ1 Obsidian UNC", p: 38.34, i: "https://img.mulebuy.com/images/13.jpg" },
+            { n: "AJ1 Tie Dye", p: 38.34, i: "https://img.mulebuy.com/images/14.jpg" },
+            { n: "AJ1 Shadow 2.0", p: 38.34, i: "https://img.mulebuy.com/images/15.jpg" },
+            { n: "AJ1 Shattered Backboard", p: 38.34, i: "https://img.mulebuy.com/images/16.jpg" },
+            { n: "AJ1 Bred Banned", p: 38.34, i: "https://img.mulebuy.com/images/17.jpg" },
+            { n: "AJ1 Patent Bred", p: 38.34, i: "https://img.mulebuy.com/images/18.jpg" },
+            { n: "AJ1 Pine Green", p: 38.34, i: "https://img.mulebuy.com/images/19.jpg" },
+            { n: "AJ1 Neutral Grey", p: 38.34, i: "https://img.mulebuy.com/images/20.jpg" },
+            { n: "AJ1 Tokyo Bio Hack", p: 38.34, i: "https://img.mulebuy.com/images/21.jpg" },
+            { n: "AJ1 Shadow 2018", p: 38.34, i: "https://img.mulebuy.com/images/22.jpg" },
+            { n: "AJ1 Game Royal", p: 38.34, i: "https://img.mulebuy.com/images/23.jpg" },
+            { n: "AJ1 Uni Blue Black", p: 38.34, i: "https://img.mulebuy.com/images/24.jpg" },
+            { n: "AJ1 Chicago 2015", p: 38.34, i: "https://img.mulebuy.com/images/25.jpg" },
+            { n: "AJ1 Hyper Royal", p: 38.34, i: "https://img.mulebuy.com/images/26.jpg" },
+            { n: "AJ1 Midnight Navy", p: 38.34, i: "https://img.mulebuy.com/images/27.jpg" },
+            { n: "AJ1 UNC Patent", p: 38.34, i: "https://img.mulebuy.com/images/28.jpg" },
+            { n: "AJ1 Court Purple", p: 38.34, i: "https://img.mulebuy.com/images/29.jpg" },
+            { n: "AJ1 Royal Toe", p: 38.34, i: "https://img.mulebuy.com/images/30.jpg" },
+            { n: "Dunk Purple Lobster", p: 56.74, i: "https://img.mulebuy.com/images/58.jpg" },
+            { n: "Dunk Orange Lobster", p: 56.74, i: "https://img.mulebuy.com/images/59.jpg" },
+            { n: "Nike Dunk Panda", p: 41.53, i: "https://img.mulebuy.com/images/64.jpg" },
+            { n: "Dunk Varsity Green", p: 29.14, i: "https://img.mulebuy.com/images/65.jpg" }
         ];
 
+        const grid = document.getElementById('grid');
+        const render = (data) => {
+            grid.innerHTML = data.map(p => `
+                <div class="card">
+                    <img src="${p.i}" loading="lazy" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+                    <h3>${p.n}</h3>
+                    <div class="price">$${p.p.toFixed(2)}</div>
+                </div>
+            `).join('');
+        };
 
-        document.getElementById('grid').innerHTML = products.map(p => `
-            <div class="card">
-                <img src="${p.i}">
-                <h3>${p.n}</h3>
-                <div class="price">$${p.p.toFixed(2)}</div>
-            </div>
-        `).join('');
+        document.getElementById('search').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            render(products.filter(p => p.n.toLowerCase().includes(term)));
+        });
+
+        render(products);
     </script>
 </body>
 </html>
