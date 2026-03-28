@@ -3,61 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VampSpreadsheet — Shoe Catalog</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>VAMP SPREADSHEET</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0f0f0f; --card: #1a1a2e; --accent: #00d4ff; --text: #ffffff; --muted: #94a3b8; }
+        :root {
+            --bg: #050505;
+            --card: #111111;
+            --accent: #00f2ff; /* Neon Cyan */
+            --text: #ffffff;
+            --border: #222222;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden;
+        }
         
-        header { position: sticky; top: 0; background: rgba(15,15,15,0.9); backdrop-filter: blur(10px); padding: 1rem 5%; border-bottom: 1px solid #333; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.5px; }
-        .search-box { background: #252538; border: 1px solid #444; padding: 0.6rem 1rem; border-radius: 8px; color: white; width: 160px; outline: none; transition: 0.3s; }
-        .search-box:focus { border-color: var(--accent); width: 200px; }
+        header { 
+            position: sticky; top: 0; 
+            background: rgba(5,5,5,0.9); 
+            backdrop-filter: blur(15px); 
+            padding: 20px 5%; 
+            border-bottom: 1px solid var(--border); 
+            z-index: 100; 
+            display: flex; flex-direction: column; align-items: center; gap: 15px;
+        }
+        
+        .logo { 
+            font-family: 'Syncopate', sans-serif; 
+            font-weight: 700; 
+            font-size: 1.1rem; 
+            letter-spacing: 4px; 
+            text-transform: uppercase;
+            color: var(--text);
+        }
 
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; max-width: 1200px; margin: 0 auto; }
-        .card { background: var(--card); border-radius: 12px; padding: 10px; border: 1px solid #333; text-align: center; transition: 0.3s; }
-        .card:active { transform: scale(0.98); border-color: var(--accent); }
+        .search-box { 
+            background: #1a1a1a; 
+            border: 1px solid var(--border); 
+            padding: 12px 20px; 
+            border-radius: 0px; /* Sharp edges for cool look */
+            color: white; 
+            width: 90%; 
+            max-width: 400px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: 0.3s;
+        }
+        .search-box:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(0,242,255,0.2); }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 15px; 
+            padding: 20px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+
+        .card { 
+            background: var(--card); 
+            border: 1px solid var(--border); 
+            padding: 10px; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+        .card:active { transform: scale(0.95); border-color: var(--accent); }
         
-        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; margin-bottom: 8px; background: #111; display: block; }
-        .card h3 { font-size: 0.8rem; font-weight: 500; height: 38px; overflow: hidden; margin-bottom: 4px; line-height: 1.2; color: #eee; }
-        .price { color: var(--accent); font-weight: 700; font-size: 1rem; }
+        .card img { 
+            width: 100%; 
+            aspect-ratio: 1/1; 
+            object-fit: cover; 
+            filter: grayscale(20%);
+            transition: 0.3s;
+            margin-bottom: 12px;
+        }
+        .card:hover img { filter: grayscale(0%); }
+
+        .card h3 { 
+            font-size: 0.65rem; 
+            font-family: 'Syncopate', sans-serif;
+            text-transform: uppercase;
+            height: 35px; 
+            overflow: hidden; 
+            margin-bottom: 8px; 
+            letter-spacing: 1px;
+            color: #ccc;
+        }
+        .price { 
+            color: var(--accent); 
+            font-weight: 700; 
+            font-size: 1.1rem; 
+            font-family: 'Inter', sans-serif;
+        }
         
-        @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } .search-box { width: 300px; } }
-        footer { text-align: center; padding: 40px; color: var(--muted); font-size: 0.75rem; border-top: 1px solid #222; margin-top: 20px; }
+        @media (min-width: 768px) { 
+            .grid { grid-template-columns: repeat(4, 1fr); gap: 25px; } 
+            header { flex-direction: row; justify-content: space-between; }
+        }
+
+        footer { text-align: center; padding: 60px 20px; color: #444; font-family: 'Syncopate', sans-serif; font-size: 0.6rem; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">VampSpreadsheet</div>
-        <input type="text" id="search" class="search-box" placeholder="Search shoes...">
+        <div class="logo">VAMP SPREADSHEET</div>
+        <input type="text" id="search" class="search-box" placeholder="SEARCH COLLECTION...">
     </header>
 
     <main class="grid" id="grid"></main>
 
-    <footer>
-        VampSpreadsheet &copy; 2026<br>
-        For educational reference only.
-    </footer>
+    <footer>EST. 2026 // ALL RIGHTS RESERVED</footer>
 
     <script>
-        // Data from the provided spreadsheet
-        // Images are routed through a worker to ensure they load on mobile
+        // High-quality StockX/Retail Image Sources
         const products = [
-                  const products = [
-            { 
-                n: "Rick Owens Geobasket 'Black/Milk'", 
-                p: 115.42, 
-                i: "https://www.sivasdescalzo.com/media/catalog/product/r/u/ru02c7894-lpo-911_svd-rick-owens-geobasket-1691494793-1.jpg?quality=80&fit=bounds&width=1600" 
-            },
-            { 
-                n: "AJ1 Dark Mocha", 
-                p: 43.38, 
-                i: "https://images.stockx.com/images/Air-Jordan-1-Retro-High-Dark-Mocha-Product.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&updated_at=1606325289" 
-            }
+            { n: "Rick Owens Geobasket Black Milk", p: 115.42, i: "https://www.sivasdescalzo.com/media/catalog/product/r/u/ru02c7894-lpo-911_svd-rick-owens-geobasket-1691494793-1.jpg?quality=80&fit=bounds&width=800" },
+            { n: "AJ1 Retro High Dark Mocha", p: 43.38, i: "https://images.stockx.com/images/Air-Jordan-1-Retro-High-Dark-Mocha-Product.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&updated_at=1606325289" },
+            { n: "TS x AJ1 High Mocha", p: 44.31, i: "https://images.stockx.com/images/Air-Jordan-1-Retro-High-Travis-Scott-Product.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&updated_at=1606325934" },
+            { n: "TS x Fragment AJ1 High", p: 61.34, i: "https://images.stockx.com/images/Air-Jordan-1-Retro-High-OG-SP-Fragment-Design-x-Travis-Scott-Product.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&updated_at=1627403486" },
+            { n: "TS x AJ1 Low Reverse Mocha", p: 53.68, i: "https://images.stockx.com/images/Air-Jordan-1-Retro-Low-OG-SP-Travis-Scott-Reverse-Mocha-Product.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&updated_at=1657631620" },
+            { n: "TS x AJ1 Low Olive", p: 35.12, i: "https://images.stockx.com/images/Air-Jordan-1-Retro-Low-OG-Travis-Scott-Olive-W-Product.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&updated_at=1680193425" },
+            { n: "TS x AJ1 Low Black Phantom", p: 27.60, i: "https://images.stockx.com/images/Air-Jordan-1-Retro-Low-OG-SP-Travis-Scott-Black-Phantom-Product.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&updated_at=1671092631" },
+            { n: "TS x Jordan Jumpman Jack", p: 47.08, i: "https://images.stockx.com/images/Jordan-Jumpman-Jack-TR-Travis-Scott-Sail-Product.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&updated_at=1711641042" },
+            { n: "AJ1 Chicago Lost and Found", p: 38.34, i: "https://images.stockx.com/images/Air-Jordan-1-Retro-High-OG-Chicago-Reimagined-Product.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&updated_at=1667230491" },
+            { n: "AJ4 Retro Military Blue", p: 65.30, i: "https://images.stockx.com/images/Air-Jordan-4-Retro-Military-Blue-2024-Product.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&updated_at=1713212877" }
         ];
-
 
         const grid = document.getElementById('grid');
         const searchInput = document.getElementById('search');
@@ -65,7 +138,7 @@
         const render = (items) => {
             grid.innerHTML = items.map(p => `
                 <div class="card">
-                    <img src="${p.i}" loading="lazy" onerror="this.src='https://via.placeholder.com/300/1a1a2e/ffffff?text=Image+Loading...'">
+                    <img src="${p.i}" loading="lazy" alt="${p.n}">
                     <h3>${p.n}</h3>
                     <div class="price">$${p.p.toFixed(2)}</div>
                 </div>
@@ -78,7 +151,6 @@
             render(filtered);
         });
 
-        // Initial Load
         render(products);
     </script>
 </body>
