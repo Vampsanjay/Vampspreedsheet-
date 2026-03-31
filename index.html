@@ -10,40 +10,42 @@
 <style>
 body {
   margin:0;
-  background:#0a0a0a;
+  background:#050505;
   color:#eee;
   font-family:'Unbounded', sans-serif;
+  overflow-x:hidden;
 }
 
-/* HEADER */
-header {
+/* GLITCH TITLE */
+h1 {
   text-align:center;
-  padding:30px;
-  border-bottom:1px solid #222;
+  margin-top:30px;
+  letter-spacing:6px;
+  animation:flicker 2s infinite;
 }
 
-header h1 {
-  letter-spacing:4px;
+@keyframes flicker {
+  0% {opacity:1;}
+  50% {opacity:0.6;}
+  100% {opacity:1;}
 }
 
-/* FILTER NAV */
+/* NAV */
 .nav {
   display:flex;
   justify-content:center;
   gap:20px;
   padding:20px;
-  border-bottom:1px solid #222;
 }
 
 .nav button {
   background:none;
   border:none;
-  color:#888;
+  color:#666;
   cursor:pointer;
-  font-size:12px;
 }
 
-.nav button.active {
+.nav button:hover {
   color:#fff;
 }
 
@@ -51,52 +53,58 @@ header h1 {
 .container {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:30px;
+  gap:40px;
   padding:40px;
 }
 
+/* CARD */
 .card {
-  background:#111;
-  border:1px solid #222;
-  cursor:pointer;
-  transition:0.3s;
   position:relative;
-}
-
-.card:hover {
-  transform:scale(1.03);
+  background:#0d0d0d;
+  border:1px solid #222;
+  overflow:hidden;
+  cursor:pointer;
 }
 
 .card img {
   width:100%;
-  height:300px;
+  height:320px;
   object-fit:cover;
+  transition:0.4s;
   filter:grayscale(100%);
 }
 
-.card-content {
-  padding:20px;
-  font-size:13px;
+.card:hover img {
+  transform:scale(1.1) rotate(1deg);
+  filter:grayscale(0%);
 }
 
-.price {
-  color:#888;
-  font-size:12px;
-}
-
-/* BADGES */
+/* BADGE */
 .badge {
   position:absolute;
   top:10px;
   left:10px;
   font-size:10px;
-  padding:5px 8px;
   border:1px solid #fff;
+  padding:4px 6px;
 }
 
-.sold { border-color:red; color:red; }
-.new { border-color:white; }
-.next { border-color:#555; color:#777; }
+/* VIEWERS */
+.viewers {
+  position:absolute;
+  bottom:10px;
+  right:10px;
+  font-size:10px;
+  color:#aaa;
+}
+
+/* COUNTDOWN */
+.countdown {
+  text-align:center;
+  font-size:14px;
+  margin-top:10px;
+  color:#aaa;
+}
 
 /* MODAL */
 .modal {
@@ -110,19 +118,10 @@ header h1 {
 
 .modal img {
   width:100%;
-  margin-bottom:20px;
-}
-
-.close {
-  position:fixed;
-  top:20px;
-  right:20px;
-  cursor:pointer;
 }
 
 /* BUTTON */
 .buy-btn {
-  display:block;
   margin:20px;
   padding:15px;
   border:1px solid #fff;
@@ -130,125 +129,128 @@ header h1 {
   cursor:pointer;
 }
 
-/* DM BOX */
-.dm-box {
-  margin:20px;
+/* PASSWORD */
+.lock {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+input {
   padding:10px;
+  background:#111;
   border:1px solid #333;
-  font-size:12px;
-  color:#aaa;
+  color:#fff;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<h1>VAMP SELECTION</h1>
-<p>
-DM → <a href="https://www.instagram.com/daggerdick_77/" target="_blank" style="color:#aaa;">@daggerdick_77</a>
-</p>
-</header>
-
-<!-- FILTER -->
-<div class="nav">
-  <button onclick="filter('all')" class="active">ALL</button>
-  <button onclick="filter('new')">NEW DROP</button>
-  <button onclick="filter('sold')">SOLD OUT</button>
-  <button onclick="filter('next')">NEXT DROP</button>
+<!-- LOCK SCREEN -->
+<div id="lock" class="lock">
+  <h1>PRIVATE DROP</h1>
+  <input type="password" id="pass" placeholder="Enter password">
+  <button onclick="unlock()">ENTER</button>
 </div>
 
-<!-- PRODUCTS -->
+<!-- MAIN -->
+<div id="site" style="display:none;">
+
+<h1>VAMP SELECTION</h1>
+
+<div class="countdown" id="countdown"></div>
+
+<div class="nav">
+  <button onclick="filter('all')">ALL</button>
+  <button onclick="filter('new')">NEW</button>
+  <button onclick="filter('sold')">SOLD</button>
+</div>
+
 <section class="container">
 
 <div class="card new" data-type="new" onclick="openModal('rick')">
-  <div class="badge new">NEW</div>
+  <div class="badge">NEW</div>
   <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">
-  <div class="card-content">
-    RICK OWENS GEOBASKET
-    <div class="price">¥120,000</div>
-  </div>
+  <div class="viewers">12 viewing</div>
 </div>
 
 <div class="card sold" data-type="sold">
-  <div class="badge sold">SOLD OUT</div>
+  <div class="badge" style="border-color:red;color:red;">SOLD OUT</div>
   <img src="https://balenciaga.dam.kering.com/m/2d3e9f1f6e0f7a0f/Medium-677390W2F701000_F.jpg">
-  <div class="card-content">
-    BALENCIAGA FURRY MULE
-    <div class="price">¥95,000</div>
-  </div>
-</div>
-
-<div class="card next" data-type="next">
-  <div class="badge next">NEXT DROP</div>
-  <img src="https://images.stockx.com/images/Rick-Owens-Ramones.png">
-  <div class="card-content">
-    RICK OWENS RAMONES
-    <div class="price">COMING SOON</div>
-  </div>
 </div>
 
 </section>
 
+</div>
+
 <!-- MODAL -->
 <div id="modal" class="modal">
-  <span class="close" onclick="closeModal()">✕</span>
+  <div onclick="closeModal()" style="position:fixed;top:20px;right:20px;">✕</div>
   <div id="modalContent"></div>
-
-  <div id="dmPreview" class="dm-box"></div>
-
   <div class="buy-btn" onclick="buyNow()">SEND DM</div>
 </div>
 
 <script>
 let currentProduct = "";
 
+/* PASSWORD */
+function unlock() {
+  let pass = document.getElementById("pass").value;
+  if(pass === "vamp") {
+    document.getElementById("lock").style.display = "none";
+    document.getElementById("site").style.display = "block";
+  } else {
+    alert("Wrong password");
+  }
+}
+
+/* COUNTDOWN */
+let dropDate = new Date().getTime() + 86400000;
+
+setInterval(() => {
+  let now = new Date().getTime();
+  let diff = dropDate - now;
+
+  let h = Math.floor(diff / (1000*60*60));
+  let m = Math.floor((diff % (1000*60*60)) / (1000*60));
+  let s = Math.floor((diff % (1000*60)) / 1000);
+
+  document.getElementById("countdown").innerText =
+    "NEXT DROP IN: " + h + "h " + m + "m " + s + "s";
+}, 1000);
+
 /* FILTER */
 function filter(type) {
-  let cards = document.querySelectorAll(".card");
-  let buttons = document.querySelectorAll(".nav button");
-
-  buttons.forEach(btn => btn.classList.remove("active"));
-  event.target.classList.add("active");
-
-  cards.forEach(card => {
-    if(type === "all" || card.dataset.type === type) {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
+  document.querySelectorAll(".card").forEach(card => {
+    card.style.display =
+      (type === "all" || card.dataset.type === type) ? "block" : "none";
   });
 }
 
 /* MODAL */
 function openModal(product) {
-  const modal = document.getElementById("modal");
-  const content = document.getElementById("modalContent");
-  const preview = document.getElementById("dmPreview");
+  currentProduct = "RICK OWENS GEOBASKET";
+  document.getElementById("modalContent").innerHTML =
+    `<img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">`;
 
-  if(product === 'rick') {
-    currentProduct = "RICK OWENS GEOBASKET";
-    content.innerHTML = `
-      <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">
-    `;
-  }
-
-  preview.innerText = "Message:\nI want to buy: " + currentProduct;
-
-  modal.style.display = "block";
-}
-
-/* BUY */
-function buyNow() {
-  const msg = "I want to buy: " + currentProduct;
-
-  navigator.clipboard.writeText(msg).then(() => {
-    window.open("https://www.instagram.com/daggerdick_77/", "_blank");
-  });
+  document.getElementById("modal").style.display = "block";
 }
 
 function closeModal() {
   document.getElementById("modal").style.display = "none";
+}
+
+/* BUY */
+function buyNow() {
+  let msg = "I want to buy: " + currentProduct;
+  navigator.clipboard.writeText(msg);
+  window.open("https://www.instagram.com/daggerdick_77/", "_blank");
 }
 </script>
 
