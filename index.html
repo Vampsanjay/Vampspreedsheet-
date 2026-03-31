@@ -11,51 +11,7 @@
 <style>
 
 /* =========================
-   🎬 CINEMATIC ADD (SAFE)
-========================= */
-
-.fog-layer{
-  position:fixed;
-  top:0;
-  left:0;
-  width:200%;
-  height:100%;
-  background:url('https://i.ibb.co/7QpKsCX/fog.png') repeat-x;
-  opacity:0.1;
-  animation:fogMove 90s linear infinite;
-  pointer-events:none;
-  z-index:1;
-}
-
-@keyframes fogMove{
-  0%{transform:translateX(0);}
-  100%{transform:translateX(-50%);}
-}
-
-.lightning{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:white;
-  opacity:0;
-  pointer-events:none;
-  z-index:2;
-}
-
-.grain{
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:url('https://i.ibb.co/2t7WZ5r/grain.png');
-  opacity:0.04;
-  pointer-events:none;
-  z-index:3;
-}
-
-/* =========================
-   🌲 ORIGINAL (UNCHANGED)
+   🌲 BACKGROUND
 ========================= */
 
 body {
@@ -88,6 +44,7 @@ body {
   animation: drip 2s infinite alternate;
 }
 
+/* dripping illusion */
 @keyframes drip {
   0% { transform:translateY(0); }
   100% { transform:translateY(6px); }
@@ -324,17 +281,6 @@ header h1 {
 
 <body>
 
-<!-- 🎬 ADD ONLY (SAFE) -->
-<div class="fog-layer"></div>
-<div class="lightning" id="lightning"></div>
-<div class="grain"></div>
-
-<audio id="ambientSound" loop>
-  <source src="https://www.fesliyanstudios.com/play-mp3/387" type="audio/mpeg">
-</audio>
-
-<!-- ORIGINAL CONTENT BELOW -->
-
 <div class="menu-btn" onclick="toggleMenu()">☰</div>
 
 <div class="side-menu" id="menu">
@@ -343,6 +289,7 @@ header h1 {
   <a href="#">Contact</a>
 </div>
 
+<!-- LOADER WITH BLOOD INTRO -->
 <div id="loader">
   <div class="intro-text">VAMP SELECTION</div>
   <div class="caution">⚠️ REPS / ARCHIVE ITEMS – ENTER AT YOUR OWN RISK</div>
@@ -374,6 +321,7 @@ header h1 {
   <a href="https://www.instagram.com/daggerdick_77/" target="_blank">Instagram</a>
 </div>
 
+<!-- ⚠️ BOTTOM WARNING -->
 <div class="footer-warning">
 ⚠️ ALL PRODUCTS ARE REPS / FOR FASHION PURPOSES ONLY — FOLLOW FOR MORE
 </div>
@@ -387,29 +335,12 @@ header h1 {
 
 <script>
 
-/* 🎬 ADD ONLY (SAFE) */
-setInterval(()=>{
-  if(Math.random()>0.92){
-    const l=document.getElementById("lightning");
-    l.style.opacity=0.8;
-    setTimeout(()=>l.style.opacity=0,120);
-  }
-},4000);
-
-document.addEventListener("click",()=>{
-  const a=document.getElementById("ambientSound");
-  if(a.paused){
-    a.volume=0.4;
-    a.play().catch(()=>{});
-  }
-});
-
-/* ORIGINAL JS */
-
+/* MENU */
 function toggleMenu(){
   document.getElementById("menu").classList.toggle("active");
 }
 
+/* LOADER */
 window.onload=()=>{
   setTimeout(()=>loader.classList.add("hide"),1600);
 };
