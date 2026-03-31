@@ -11,7 +11,7 @@
 <style>
 
 /* =========================
-   🌲 BACKGROUND + PAGE LENGTH + PARALLAX
+   🌲 BACKGROUND + PAGE LENGTH
 ========================= */
 
 body {
@@ -333,18 +333,12 @@ window.onload=()=>{
   setTimeout(()=>loader.classList.add("hide"),1600);
 };
 
-/* =========================
-   PERFECT SCROLL FOLLOW + BACKGROUND PARALLAX
-========================= */
+/* PERFECT SCROLL FOLLOW */
 window.addEventListener("scroll", () => {
   const scrollY = window.scrollY;
 
-  // Instagram and caution follow scroll
   document.querySelector(".insta").style.transform = `translateY(${scrollY}px)`;
   document.querySelector(".footer-warning").style.transform = `translateY(${scrollY}px)`;
-
-  // Parallax background moves slower than scroll
-  document.body.style.backgroundPosition = `center ${scrollY * 0.3}px`;
 });
 
 let currentProduct="";
