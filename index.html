@@ -13,6 +13,19 @@ body {
   background:#050505;
   color:#eee;
   font-family:'Unbounded', sans-serif;
+  cursor:none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  position:fixed;
+  width:12px;
+  height:12px;
+  background:#fff;
+  border-radius:50%;
+  pointer-events:none;
+  transform:translate(-50%, -50%);
+  mix-blend-mode:difference;
 }
 
 /* HEADER */
@@ -23,14 +36,9 @@ header {
   padding:20px;
   border-bottom:1px solid #222;
   position:relative;
+  backdrop-filter: blur(6px);
 }
 
-h1 {
-  letter-spacing:5px;
-  font-size:18px;
-}
-
-/* MENU BUTTON */
 .menu-btn {
   position:absolute;
   left:20px;
@@ -38,27 +46,23 @@ h1 {
   cursor:pointer;
 }
 
-/* SIDEBAR (SMOOTH) */
+/* SIDEBAR */
 .sidebar {
   position:fixed;
   top:0;
   left:-260px;
   width:260px;
   height:100%;
-  background:#000;
-  border-right:1px solid #222;
-  transition:0.4s ease;
+  background:rgba(0,0,0,0.9);
+  backdrop-filter: blur(10px);
+  transition:0.4s;
   padding:30px 20px;
-  z-index:1000;
 }
 
 .sidebar a {
   display:block;
   margin:20px 0;
   color:#777;
-  text-decoration:none;
-  font-size:14px;
-  letter-spacing:1px;
 }
 
 .sidebar a:hover {
@@ -70,7 +74,7 @@ h1 {
   position:fixed;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.6);
+  background:rgba(0,0,0,0.7);
   display:none;
 }
 
@@ -82,15 +86,18 @@ h1 {
   padding:30px;
 }
 
+/* CARD */
 .card {
+  opacity:0;
+  transform:translateY(30px);
+  animation:fadeUp 0.6s forwards;
   background:#0d0d0d;
   border:1px solid #222;
   cursor:pointer;
-  transition:0.3s;
 }
 
-.card:hover {
-  transform:scale(1.03);
+@keyframes fadeUp {
+  to {opacity:1; transform:translateY(0);}
 }
 
 .card img {
@@ -98,6 +105,12 @@ h1 {
   height:300px;
   object-fit:cover;
   filter:grayscale(100%);
+  transition:0.3s;
+}
+
+.card:hover img {
+  filter:grayscale(0%);
+  transform:scale(1.05);
 }
 
 .card-content {
@@ -109,6 +122,12 @@ h1 {
   font-size:12px;
 }
 
+/* VIEWERS */
+.viewers {
+  font-size:11px;
+  color:#aaa;
+}
+
 /* MODAL */
 .modal {
   display:none;
@@ -117,29 +136,16 @@ h1 {
   height:100%;
   background:#000;
   overflow:auto;
-  z-index:2000;
 }
 
-.modal img {
+.gallery {
+  display:flex;
+  overflow-x:scroll;
+}
+
+.gallery img {
   width:100%;
-  margin-bottom:20px;
-}
-
-.close {
-  position:fixed;
-  top:20px;
-  right:20px;
-  font-size:20px;
-  cursor:pointer;
-}
-
-/* DM BOX */
-.dm-box {
-  margin:20px;
-  padding:10px;
-  border:1px solid #333;
-  font-size:12px;
-  color:#aaa;
+  flex-shrink:0;
 }
 
 /* BUY */
@@ -148,18 +154,28 @@ h1 {
   padding:15px;
   border:1px solid #fff;
   text-align:center;
-  cursor:pointer;
+}
+
+/* DM */
+.dm-box {
+  margin:20px;
+  border:1px solid #333;
+  padding:10px;
+  font-size:12px;
+  color:#aaa;
 }
 </style>
 </head>
 
 <body>
 
+<div class="cursor" id="cursor"></div>
+
 <!-- MENU -->
 <div id="sidebar" class="sidebar">
-  <a onclick="filter('all'); closeMenu()">ALL ITEMS</a>
+  <a onclick="filter('all'); closeMenu()">ALL</a>
   <a onclick="filter('shoes'); closeMenu()">SHOES</a>
-  <a onclick="filter('new'); closeMenu()">NEW DROPS</a>
+  <a onclick="filter('new'); closeMenu()">NEW</a>
 </div>
 
 <div id="overlay" class="overlay" onclick="closeMenu()"></div>
@@ -169,7 +185,6 @@ h1 {
   <h1>VAMP SELECTION</h1>
 </header>
 
-<!-- PRODUCTS -->
 <section class="container">
 
 <div class="card" data-type="shoes new" onclick="openModal('rick')">
@@ -177,14 +192,8 @@ h1 {
   <div class="card-content">
     RICK OWENS GEOBASKET
     <div class="price">¥120,000</div>
-  </div>
-</div>
-
-<div class="card" data-type="shoes">
-  <img src="https://balenciaga.dam.kering.com/m/2d3e9f1f6e0f7a0f/Medium-677390W2F701000_F.jpg">
-  <div class="card-content">
-    BALENCIAGA FURRY MULE
-    <div class="price">¥95,000</div>
+    <div class="viewers" id="viewers"></div>
+    <div style="color:red;font-size:11px;">Only 1 left</div>
   </div>
 </div>
 
@@ -192,7 +201,8 @@ h1 {
 
 <!-- MODAL -->
 <div id="modal" class="modal">
-  <div class="close" onclick="closeModal()">✕</div>
+  <div onclick="closeModal()" style="position:fixed;top:20px;right:20px;">✕</div>
+
   <div id="modalContent"></div>
 
   <div id="dmPreview" class="dm-box"></div>
@@ -203,53 +213,57 @@ h1 {
 <script>
 let currentProduct = "";
 
-/* MENU */
-function openMenu() {
-  document.getElementById("sidebar").style.left = "0";
-  document.getElementById("overlay").style.display = "block";
-}
+/* CURSOR */
+document.addEventListener("mousemove", e=>{
+  document.getElementById("cursor").style.left = e.clientX+"px";
+  document.getElementById("cursor").style.top = e.clientY+"px";
+});
 
-function closeMenu() {
-  document.getElementById("sidebar").style.left = "-260px";
-  document.getElementById("overlay").style.display = "none";
+/* VIEWERS */
+document.getElementById("viewers").innerText =
+  Math.floor(Math.random()*20)+5 + " viewing";
+
+/* MENU */
+function openMenu(){
+  sidebar.style.left="0";
+  overlay.style.display="block";
+}
+function closeMenu(){
+  sidebar.style.left="-260px";
+  overlay.style.display="none";
 }
 
 /* FILTER */
-function filter(type) {
-  document.querySelectorAll(".card").forEach(card => {
-    let types = card.dataset.type;
-    card.style.display =
-      (type === "all" || types.includes(type)) ? "block" : "none";
+function filter(type){
+  document.querySelectorAll(".card").forEach(c=>{
+    c.style.display=(type==="all"||c.dataset.type.includes(type))?"block":"none";
   });
 }
 
 /* MODAL */
-function openModal(product) {
-  const content = document.getElementById("modalContent");
-  const preview = document.getElementById("dmPreview");
+function openModal(){
+  currentProduct="RICK OWENS GEOBASKET";
 
-  if(product === 'rick') {
-    currentProduct = "RICK OWENS GEOBASKET BLACK MILK";
-    content.innerHTML = `
-      <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">
-    `;
-  }
+  modalContent.innerHTML=`
+  <div class="gallery">
+    <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">
+    <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk-Product.jpg">
+  </div>`;
 
-  preview.innerText = "Message:\nI want to buy: " + currentProduct;
+  dmPreview.innerText="Message:\nI want to buy: "+currentProduct;
 
-  document.getElementById("modal").style.display = "block";
+  modal.style.display="block";
 }
 
-function closeModal() {
-  document.getElementById("modal").style.display = "none";
+function closeModal(){
+  modal.style.display="none";
 }
 
 /* BUY */
-function buyNow() {
-  let msg = "I want to buy: " + currentProduct;
-  navigator.clipboard.writeText(msg).then(() => {
-    window.open("https://www.instagram.com/daggerdick_77/", "_blank");
-  });
+function buyNow(){
+  let msg="I want to buy: "+currentProduct;
+  navigator.clipboard.writeText(msg);
+  window.open("https://www.instagram.com/daggerdick_77/","_blank");
 }
 </script>
 
