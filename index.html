@@ -17,7 +17,7 @@ body {
   font-family:'Unbounded', sans-serif;
 }
 
-/* 🩸 LOADING SCREEN */
+/* 🩸 LOADER */
 #loader {
   position:fixed;
   width:100%;
@@ -28,13 +28,46 @@ body {
   align-items:center;
   z-index:9999;
   flex-direction:column;
+  overflow:hidden;
 }
 
-#loader h1 {
+/* BLOOD TEXT */
+.blood {
+  position:relative;
   color:#8b0000;
   font-size:22px;
   letter-spacing:6px;
   animation:pulse 1.5s infinite;
+  text-shadow:0 0 10px rgba(139,0,0,0.6);
+}
+
+/* MULTI DRIPS */
+.blood::before,
+.blood::after {
+  content:'';
+  position:absolute;
+  background:#8b0000;
+  width:2px;
+  height:0;
+  bottom:-5px;
+  animation:drip 2s infinite;
+  opacity:0.8;
+}
+
+.blood::before {
+  left:30%;
+  animation-delay:0.2s;
+}
+
+.blood::after {
+  left:65%;
+  animation-delay:0.6s;
+}
+
+@keyframes drip {
+  0% { height:0; opacity:0; }
+  40% { height:18px; opacity:1; }
+  100% { height:0; opacity:0; }
 }
 
 @keyframes pulse {
@@ -43,9 +76,11 @@ body {
   100% {opacity:0.5; transform:scale(0.95);}
 }
 
+/* CINEMATIC EXIT */
 #loader.hide {
   opacity:0;
-  transition:1s ease;
+  transform:scale(1.1);
+  transition:1.2s cubic-bezier(0.22,1,0.36,1);
   pointer-events:none;
 }
 
@@ -70,9 +105,7 @@ h1 {
 }
 
 /* CARD */
-.card {
-  cursor:pointer;
-}
+.card { cursor:pointer; }
 
 .card img {
   width:100%;
@@ -104,10 +137,10 @@ h1 {
   pointer-events:auto;
 }
 
-/* ❌ CLOSE (LOWER) */
+/* ❌ CLOSE */
 .close {
   position:fixed;
-  top:60px; /* moved lower */
+  top:60px;
   right:20px;
   font-size:24px;
   z-index:3000;
@@ -119,10 +152,7 @@ h1 {
 }
 
 /* GALLERY */
-.gallery {
-  position:relative;
-  overflow:hidden;
-}
+.gallery { position:relative; overflow:hidden; }
 
 .gallery-track {
   display:flex;
@@ -160,10 +190,7 @@ h1 {
 .arrow.right { right:10px; }
 
 /* DOTS */
-.dots {
-  text-align:center;
-  margin-top:10px;
-}
+.dots { text-align:center; margin-top:10px; }
 
 .dot {
   display:inline-block;
@@ -228,9 +255,12 @@ h1 {
 
 <body>
 
-<!-- LOADER -->
+<!-- 🔊 SOUND -->
+<audio id="introSound" src="intro.mp3"></audio>
+
+<!-- 🩸 LOADER -->
 <div id="loader">
-  <h1>VAMP SELECTION</h1>
+  <h1 class="blood">VAMP SELECTION</h1>
 </div>
 
 <header>
@@ -272,11 +302,17 @@ h1 {
 
 <script>
 
-/* LOADER FADE */
+/* LOADER */
 window.onload = () => {
+  const sound = document.getElementById("introSound");
+  if(sound){
+    sound.volume = 0.3;
+    sound.play().catch(()=>{});
+  }
+
   setTimeout(()=>{
     document.getElementById("loader").classList.add("hide");
-  },1200);
+  },1400);
 };
 
 let currentProduct="";
