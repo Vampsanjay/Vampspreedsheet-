@@ -84,11 +84,15 @@ h1 {
   backdrop-filter:blur(10px);
   transition:0.6s cubic-bezier(0.22,1,0.36,1);
   z-index:2000;
-  padding-top:60px; /* SPACE FROM TOP */
+  padding-top:60px;
+
+  /* FIX CLICK BUG */
+  pointer-events:none;
 }
 
 #modal.active {
   bottom:0;
+  pointer-events:auto;
 }
 
 /* CLOSE */
@@ -100,7 +104,7 @@ h1 {
   cursor:pointer;
 }
 
-/* GALLERY (SWIPE) */
+/* GALLERY */
 .gallery {
   display:flex;
   overflow-x:auto;
@@ -142,7 +146,7 @@ h1 {
   color:#000;
 }
 
-/* INSTAGRAM SECTION */
+/* INSTAGRAM */
 .insta {
   margin:60px 0;
   text-align:center;
@@ -191,7 +195,6 @@ h1 {
 
 </section>
 
-<!-- INSTAGRAM VIBE -->
 <div class="insta">
   ARCHIVE ENERGY — FOLLOW FOR MORE  
   <br>
@@ -217,7 +220,7 @@ document.documentElement.style.scrollBehavior="smooth";
 
 let currentProduct="";
 
-/* FADE */
+/* FADE IN */
 const cards=document.querySelectorAll('.card');
 window.onload=()=>{
   cards.forEach((card,i)=>{
@@ -225,7 +228,7 @@ window.onload=()=>{
   });
 };
 
-/* MODAL */
+/* OPEN */
 function openModal(product){
 
   if(product==="rick"){
@@ -253,11 +256,20 @@ function openModal(product){
   document.getElementById("modal").classList.add("active");
 }
 
+/* CLOSE (FIXED) */
 function closeModal(){
-  document.getElementById("modal").classList.remove("active");
+  const modal=document.getElementById("modal");
+
+  modal.classList.remove("active");
+
+  setTimeout(()=>{
+    document.getElementById("modalContent").innerHTML="";
+    document.getElementById("dmPreview").innerText="";
+    currentProduct="";
+  },300);
 }
 
-/* DM (UNCHANGED) */
+/* DM */
 function buyNow(){
   let msg="I want to buy: "+currentProduct;
   navigator.clipboard.writeText(msg);
