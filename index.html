@@ -6,205 +6,209 @@
 
 <title>Vamp Selection</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- REVENGE STYLE FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Unbounded:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
 /* =========================
-   🌲 GLOBAL / BACKGROUND
+   🌲 BACKGROUND
 ========================= */
 
 body {
   margin:0;
-  padding:0;
   font-family:'Unbounded', sans-serif;
-  color:#eaeaea;
+  color:#eee;
 
   background:
   linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)),
   url('https://images.unsplash.com/photo-1470770903676-69b98201ea1c?grayscale')
-  no-repeat center center fixed;
-
-  background-size:cover;
+  no-repeat center/cover fixed;
 }
 
-body::after{
-  content:"";
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:url('https://grainy-gradients.vercel.app/noise.svg');
-  opacity:0.08;
-  pointer-events:none;
+/* =========================
+   🩸 EVIL TITLE FONT
+========================= */
+
+header h1 {
+  font-family:'Creepster', cursive;
+  color:#b30000;
+  font-size:28px;
+  letter-spacing:4px;
+
+  text-shadow:
+    0 0 5px #ff0000,
+    0 0 15px #8b0000,
+    0 0 30px #000;
+
+  animation:flicker 2.5s infinite;
+}
+
+/* subtle evil flicker */
+@keyframes flicker {
+  0%,18%,22%,25%,53%,57%,100% { opacity:1; }
+  20%,24%,55% { opacity:0.4; }
 }
 
 /* =========================
    🩸 LOADER
 ========================= */
 
-#loader{
+#loader {
   position:fixed;
   width:100%;
   height:100%;
   background:#000;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   z-index:9999;
 }
 
-.blood{
+.blood {
+  font-family:'Creepster', cursive;
   color:#8b0000;
   font-size:26px;
-  letter-spacing:10px;
-  animation:pulse 1.6s infinite;
-  text-shadow:0 0 8px #8b0000, 0 0 20px #4b0000;
+  letter-spacing:6px;
 }
 
-@keyframes pulse{
-  0%,100%{opacity:0.4;}
-  50%{opacity:1;}
-}
-
-#loader.hide{
+#loader.hide {
   opacity:0;
-  transition:1.2s ease;
+  transition:1s;
   pointer-events:none;
 }
 
 /* =========================
-   ☰ MENU BUTTON
+   ☰ MENU
 ========================= */
 
 .menu-btn{
   position:absolute;
   left:20px;
   top:30px;
-  font-size:20px;
+  font-size:22px;
   cursor:pointer;
 }
 
-/* =========================
-   📂 SIDE MENU
-========================= */
-
 .side-menu{
   position:fixed;
-  top:0;
   left:-100%;
+  top:0;
   width:260px;
   height:100%;
   background:#0a0a0a;
   padding:40px 20px;
-  transition:0.5s;
+  transition:0.4s ease;
   z-index:4000;
 }
 
-.side-menu.active{
-  left:0;
-}
+.side-menu.active{ left:0; }
 
 .side-menu a{
   display:block;
   margin:20px 0;
-  text-decoration:none;
   color:#aaa;
-  font-size:14px;
-}
-
-.side-menu a:hover{
-  color:#fff;
+  text-decoration:none;
 }
 
 /* =========================
-   🧠 HEADER
+   HEADER
 ========================= */
 
-header{
+header {
   text-align:center;
-  padding:30px 20px;
-  border-bottom:1px solid rgba(255,255,255,0.08);
+  padding:25px;
+  border-bottom:1px solid #222;
   position:relative;
 }
 
-/* 🩸 AGGRESSIVE TITLE */
-header h1{
-  font-size:20px;
-  letter-spacing:6px;
-  color:#b30000;
-  text-shadow:
-    0 0 5px #ff0000,
-    0 0 15px #8b0000,
-    0 0 30px #4b0000;
-}
-
 /* =========================
-   🧱 GRID
+   GRID
 ========================= */
 
-.container{
+.container {
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:60px 25px;
-  padding:50px 20px;
+  gap:50px 20px;
+  padding:40px 20px;
 }
 
 /* CARD */
-.card{ cursor:pointer; }
-.card img{
+.card { cursor:pointer; }
+
+.card img {
   width:100%;
-  height:250px;
+  height:240px;
   object-fit:cover;
 }
 
-.name{ margin-top:14px; font-size:13px; }
-.price{ font-size:12px; color:#777; }
-.stock{ font-size:11px; color:#b30000; }
+.name { font-size:13px; margin-top:10px; }
+.price { font-size:12px; color:#777; }
+.stock { color:red; font-size:11px; }
 
-/* MODAL */
-#modal{
+/* =========================
+   🚀 MODAL (FIXED SMOOTH)
+========================= */
+
+#modal {
   position:fixed;
-  bottom:-100%;
+  bottom:0;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.97);
-  transition:0.6s;
+  background:rgba(0,0,0,0.96);
+
+  transform:translateY(100%);
+  transition:transform 0.55s cubic-bezier(0.22,1,0.36,1);
+
+  will-change:transform;
   z-index:2000;
-  padding-top:70px;
-  pointer-events:none;
+  padding-top:60px;
 }
 
-#modal.active{
-  bottom:0;
-  pointer-events:auto;
+#modal.active {
+  transform:translateY(0);
 }
 
 /* CLOSE */
-.close{
+.close {
   position:fixed;
-  top:70px;
+  top:65px;
   right:20px;
   font-size:24px;
   cursor:pointer;
   z-index:3000;
 }
 
-/* GALLERY */
-.gallery{ overflow:hidden; position:relative; }
-.gallery-track{ display:flex; transition:0.6s; }
-.gallery img{
+/* =========================
+   GALLERY
+========================= */
+
+.gallery {
+  overflow:hidden;
+  position:relative;
+}
+
+.gallery-track {
+  display:flex;
+  transition:transform 0.6s ease;
+  will-change:transform;
+}
+
+.gallery img {
   width:100%;
   flex:0 0 100%;
   opacity:0.6;
   filter:blur(6px);
+  transition:0.6s;
 }
-.gallery img.active{
+
+.gallery img.active {
   opacity:1;
   filter:blur(0);
 }
 
 /* ARROWS */
-.arrow{
+.arrow {
   position:absolute;
   top:50%;
   transform:translateY(-50%);
@@ -212,27 +216,35 @@ header h1{
   padding:8px;
   cursor:pointer;
 }
-.arrow.left{ left:10px; }
-.arrow.right{ right:10px; }
+
+.arrow.left { left:10px; }
+.arrow.right { right:10px; }
 
 /* DOTS */
-.dots{text-align:center;}
-.dot{
+.dots { text-align:center; }
+
+.dot {
   width:6px;
   height:6px;
-  background:#444;
+  background:#555;
   display:inline-block;
   margin:5px;
   border-radius:50%;
 }
-.dot.active{
+
+.dot.active {
   width:16px;
   background:#fff;
 }
 
 /* DM */
-#dmPreview{ margin:20px; font-size:12px; color:#aaa; }
-.buy-btn{
+#dmPreview {
+  margin:20px;
+  font-size:12px;
+  color:#aaa;
+}
+
+.buy-btn {
   margin:20px;
   padding:15px;
   border:1px solid #fff;
@@ -241,10 +253,9 @@ header h1{
 }
 
 /* INSTAGRAM */
-.insta{
-  margin:80px 0;
+.insta {
   text-align:center;
-  font-size:12px;
+  margin:60px 0;
 }
 
 </style>
@@ -252,7 +263,6 @@ header h1{
 
 <body>
 
-<!-- MENU -->
 <div class="menu-btn" onclick="toggleMenu()">☰</div>
 
 <div class="side-menu" id="menu">
@@ -261,9 +271,8 @@ header h1{
   <a href="#">Contact</a>
 </div>
 
-<!-- LOADER -->
 <div id="loader">
-  <div class="blood">VAMP SELECTION</div>
+  <h1 class="blood">VAMP SELECTION</h1>
 </div>
 
 <header>
@@ -274,14 +283,14 @@ header h1{
 
 <div class="card" onclick="openModal('rick')">
   <img src="IMG_0653.webp">
-  <div class="name">Rick Owens<br>Geobasket Black Milk</div>
+  <div class="name">Rick Owens<br>Geobasket</div>
   <div class="price">¥120,000</div>
   <div class="stock">Only 1 left</div>
 </div>
 
 <div class="card" onclick="openModal('balenciaga')">
   <img src="IMG_0663.jpeg">
-  <div class="name">Balenciaga<br>Furry Mule</div>
+  <div class="name">Balenciaga Mule</div>
   <div class="price">¥95,000</div>
 </div>
 
@@ -339,7 +348,8 @@ function openModal(product){
   setTimeout(updateGallery,50);
 
   dmPreview.innerText="I want to buy: "+currentProduct;
-  modal.classList.add("active");
+
+  document.getElementById("modal").classList.add("active");
 }
 
 function createGallery(images){
@@ -388,7 +398,7 @@ function prev(){
 }
 
 function closeModal(){
-  modal.classList.remove("active");
+  document.getElementById("modal").classList.remove("active");
 }
 
 function buyNow(){
