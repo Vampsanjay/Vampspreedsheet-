@@ -80,6 +80,7 @@ header {
   cursor:pointer;
 }
 
+/* BUY BUTTON */
 .buy-btn {
   display:block;
   text-align:center;
@@ -88,6 +89,22 @@ header {
   margin:20px;
   text-decoration:none;
   color:#fff;
+  transition:0.3s;
+}
+
+.buy-btn:hover {
+  background:#fff;
+  color:#000;
+}
+
+/* FAKE DM BOX */
+.dm-box {
+  margin:20px;
+  padding:15px;
+  border:1px solid #333;
+  background:#111;
+  font-size:12px;
+  color:#aaa;
 }
 </style>
 </head>
@@ -129,35 +146,48 @@ DM to purchase →
   <span class="close" onclick="closeModal()">✕</span>
   <div id="modalContent"></div>
 
-  <a id="buyBtn" class="buy-btn" target="_blank">
-    DM TO BUY ON INSTAGRAM
+  <!-- Fake DM Preview -->
+  <div id="dmPreview" class="dm-box"></div>
+
+  <a class="buy-btn" onclick="buyNow()">
+    SEND DM
   </a>
 </div>
 
 <script>
+let currentProduct = "";
+
 function openModal(product) {
   const modal = document.getElementById("modal");
   const content = document.getElementById("modalContent");
-  const buyBtn = document.getElementById("buyBtn");
+  const preview = document.getElementById("dmPreview");
 
   if(product === 'rick') {
+    currentProduct = "RICK OWENS GEOBASKET BLACK MILK";
     content.innerHTML = `
       <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">
       <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk-Product.jpg">
     `;
-
-    buyBtn.href = "https://www.instagram.com/direct/t/?text=I%20want%20to%20buy%20RICK%20OWENS%20GEOBASKET%20BLACK%20MILK";
   }
 
   if(product === 'balenciaga') {
+    currentProduct = "BALENCIAGA FURRY MULE";
     content.innerHTML = `
       <img src="https://balenciaga.dam.kering.com/m/2d3e9f1f6e0f7a0f/Medium-677390W2F701000_F.jpg">
     `;
-
-    buyBtn.href = "https://www.instagram.com/direct/t/?text=I%20want%20to%20buy%20BALENCIAGA%20FURRY%20MULE";
   }
 
+  preview.innerText = "Message:\nI want to buy: " + currentProduct;
+
   modal.style.display = "block";
+}
+
+function buyNow() {
+  const message = "I want to buy: " + currentProduct;
+
+  navigator.clipboard.writeText(message).then(() => {
+    window.open("https://www.instagram.com/daggerdick_77/", "_blank");
+  });
 }
 
 function closeModal() {
