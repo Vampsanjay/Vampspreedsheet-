@@ -25,19 +25,12 @@ header {
   position:relative;
 }
 
-.menu-btn {
-  position:absolute;
-  left:20px;
-  font-size:20px;
-  cursor:pointer;
-}
-
 h1 {
   font-size:16px;
   letter-spacing:4px;
 }
 
-/* GRID LIKE ARCHIVED */
+/* GRID */
 .container {
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -45,21 +38,28 @@ h1 {
   padding:30px 20px;
 }
 
-/* PRODUCT */
+/* CARD */
 .card {
+  opacity:0;
+  transform:translateY(30px);
+  transition:all 0.8s ease;
   cursor:pointer;
-  transition:0.3s;
+}
+
+.card.show {
+  opacity:1;
+  transform:translateY(0);
 }
 
 .card img {
   width:100%;
   height:220px;
   object-fit:cover;
-  background:#111;
-  transition:0.4s;
+  transition:0.6s ease;
 }
 
 .card:hover img {
+  transform:scale(1.05);
   opacity:0.85;
 }
 
@@ -83,18 +83,25 @@ h1 {
 
 /* MODAL */
 #modal {
-  display:none;
   position:fixed;
+  bottom:-100%;
+  left:0;
   width:100%;
   height:100%;
   background:#000;
+  transition:0.5s ease;
   z-index:2000;
+}
+
+#modal.active {
+  bottom:0;
 }
 
 .gallery img {
   width:100%;
 }
 
+/* CLOSE */
 .close {
   position:fixed;
   top:20px;
@@ -116,6 +123,12 @@ h1 {
   border:1px solid #fff;
   text-align:center;
   cursor:pointer;
+  transition:0.3s;
+}
+
+.buy-btn:hover {
+  background:#fff;
+  color:#000;
 }
 </style>
 </head>
@@ -123,7 +136,6 @@ h1 {
 <body>
 
 <header>
-  <div class="menu-btn">☰</div>
   <h1>VAMP SELECTION</h1>
 </header>
 
@@ -132,9 +144,7 @@ h1 {
 <!-- RICK -->
 <div class="card" onclick="openModal('rick')">
   <img src="IMG_0653.webp">
-  <div class="name">
-    Rick Owens<br>Geobasket Black Milk
-  </div>
+  <div class="name">Rick Owens<br>Geobasket Black Milk</div>
   <div class="price">¥120,000</div>
   <div class="stock">Only 1 left</div>
 </div>
@@ -142,9 +152,7 @@ h1 {
 <!-- BALENCIAGA -->
 <div class="card" onclick="openModal('balenciaga')">
   <img src="IMG_0663.jpeg">
-  <div class="name">
-    Balenciaga<br>Furry Mule
-  </div>
+  <div class="name">Balenciaga<br>Furry Mule</div>
   <div class="price">¥95,000</div>
 </div>
 
@@ -158,39 +166,53 @@ h1 {
 
   <div id="dmPreview"></div>
 
-  <div class="buy-btn" onclick="buyNow()">DM TO BUY</div>
+  <div class="buy-btn" onclick="buyNow()">DM US ON INSTAGRAM</div>
 </div>
 
 <script>
 let currentProduct = "";
 
+/* FADE-IN ON SCROLL */
+const cards = document.querySelectorAll('.card');
+window.addEventListener('scroll', () => {
+  cards.forEach(card => {
+    const rect = card.getBoundingClientRect();
+    if(rect.top < window.innerHeight - 50){
+      card.classList.add('show');
+    }
+  });
+});
+
+/* LOAD ANIMATION */
+window.onload = () => {
+  cards.forEach((card,i)=>{
+    setTimeout(()=>card.classList.add('show'), i*150);
+  });
+};
+
 /* MODAL */
 function openModal(product){
-
   if(product==="rick"){
     currentProduct="Rick Owens Geobasket Black Milk";
-    document.getElementById("modalContent").innerHTML=
-      `<div class="gallery">
-        <img src="IMG_0653.webp">
-      </div>`;
+    modalContent.innerHTML=`<div class="gallery">
+      <img src="IMG_0653.webp">
+    </div>`;
   }
 
   if(product==="balenciaga"){
     currentProduct="Balenciaga Furry Mule";
-    document.getElementById("modalContent").innerHTML=
-      `<div class="gallery">
-        <img src="IMG_0663.jpeg">
-      </div>`;
+    modalContent.innerHTML=`<div class="gallery">
+      <img src="IMG_0663.jpeg">
+    </div>`;
   }
 
-  document.getElementById("dmPreview").innerText =
-    "Message:\nI want to buy: " + currentProduct;
+  dmPreview.innerText="Message:\nI want to buy: "+currentProduct;
 
-  document.getElementById("modal").style.display="block";
+  document.getElementById("modal").classList.add("active");
 }
 
 function closeModal(){
-  document.getElementById("modal").style.display="none";
+  document.getElementById("modal").classList.remove("active");
 }
 
 /* BUY */
