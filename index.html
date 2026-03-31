@@ -11,7 +11,7 @@
 <style>
 
 /* =========================
-   🌲 BACKGROUND
+   🌲 BACKGROUND + PAGE LENGTH
 ========================= */
 
 body {
@@ -19,7 +19,9 @@ body {
   font-family: 'Unbounded', sans-serif;
   color: #eee;
 
-  background: url('IMG_0672.jpeg') no-repeat center 0;
+  min-height: 200vh;
+
+  background: url('IMG_0672.jpeg') no-repeat center center fixed;
   background-size: cover;
 }
 
@@ -46,6 +48,10 @@ body {
   0% { transform:translateY(0); }
   100% { transform:translateY(6px); }
 }
+
+/* =========================
+   ⚠️ CAUTION
+========================= */
 
 .caution {
   font-family:'Creepster', cursive;
@@ -139,7 +145,6 @@ header h1 {
 }
 
 /* CARD */
-
 .card { cursor:pointer; }
 
 .card img {
@@ -208,7 +213,6 @@ header h1 {
 }
 
 /* ARROWS */
-
 .arrow {
   position:absolute;
   top:50%;
@@ -222,7 +226,6 @@ header h1 {
 .arrow.right { right:10px; }
 
 /* DOTS */
-
 .dots { text-align:center; }
 
 .dot {
@@ -248,14 +251,15 @@ header h1 {
   position: relative;
   width: 100%;
   text-align: center;
-  transition: transform 0.1s linear;
-  will-change: transform;
+  transition: transform 0.15s linear;
 }
 
-.insta { margin-top:120px; }
+.insta {
+  margin-top: 120px;
+}
 
 .footer-warning {
-  margin-top:40px;
+  margin-top: 40px;
   font-family:'Creepster', cursive;
   font-size:11px;
   color:#8b0000;
@@ -329,19 +333,12 @@ window.onload=()=>{
   setTimeout(()=>loader.classList.add("hide"),1600);
 };
 
-/* 🔥 FIXED PARALLAX + SAFE FOLLOW */
+/* PERFECT SCROLL FOLLOW */
 window.addEventListener("scroll", () => {
   const scrollY = window.scrollY;
 
-  /* background only moves */
-  document.body.style.backgroundPositionY = -(scrollY * 0.3) + "px";
-
-  /* limited follow */
-  const maxMove = 300;
-  const move = Math.min(scrollY, maxMove);
-
-  document.querySelector(".insta").style.transform = `translateY(${move}px)`;
-  document.querySelector(".footer-warning").style.transform = `translateY(${move}px)`;
+  document.querySelector(".insta").style.transform = `translateY(${scrollY}px)`;
+  document.querySelector(".footer-warning").style.transform = `translateY(${scrollY}px)`;
 });
 
 let currentProduct="";
