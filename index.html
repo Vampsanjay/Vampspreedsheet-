@@ -9,45 +9,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Unbounded:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-   /* Extend page length but keep product in same place */
-body {
-  min-height: 200vh; /* Makes the page roughly twice the viewport height */
-  position: relative;
-}
-
-.container {
-  position: relative; /* keeps product cards in same visual place */
-  z-index: 1;
-}
-
-.insta,
-.footer-warning {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  z-index: 1;
-}
-
-.insta {
-  bottom: 80px; /* Instagram link floats near bottom */
-}
-
-.footer-warning {
-  bottom: 30px; /* Caution text stays just above the bottom */
-}
 
 /* =========================
-   🌲 BACKGROUND
+   🌲 BACKGROUND + PAGE LENGTH
 ========================= */
+
 body {
   margin: 0;
   font-family: 'Unbounded', sans-serif;
   color: #eee;
 
-  /* Full original background, fixed to avoid scroll interference */
+  min-height: 200vh;
+
   background: url('IMG_0672.jpeg') no-repeat center center fixed;
-  background-size: cover; /* Fill the screen */
+  background-size: cover;
 }
 
 /* =========================
@@ -69,7 +44,6 @@ body {
   animation: drip 2s infinite alternate;
 }
 
-/* dripping illusion */
 @keyframes drip {
   0% { transform:translateY(0); }
   100% { transform:translateY(6px); }
@@ -169,6 +143,8 @@ header h1 {
   grid-template-columns:1fr 1fr;
   gap:50px 20px;
   padding:40px 20px;
+  position:relative;
+  z-index:1;
 }
 
 /* CARD */
@@ -185,7 +161,7 @@ header h1 {
 .stock { color:red; font-size:11px; }
 
 /* =========================
-   MODAL (SMOOTH)
+   MODAL
 ========================= */
 
 #modal {
@@ -204,7 +180,6 @@ header h1 {
   transform:translateY(0);
 }
 
-/* CLOSE */
 .close {
   position:fixed;
   top:65px;
@@ -282,22 +257,29 @@ header h1 {
   cursor:pointer;
 }
 
-/* INSTAGRAM */
-.insta {
-  text-align:center;
-  margin:60px 0;
-}
-
 /* =========================
-   ⚠️ BOTTOM DISCLAIMER
+   INSTAGRAM + WARNING (SCROLL FOLLOW)
 ========================= */
 
+.insta,
 .footer-warning {
-  text-align:center;
+  position: relative;
+  width: 100%;
+  text-align: center;
+  z-index: 1;
+  transition: transform 0.2s linear;
+  will-change: transform;
+}
+
+.insta {
+  margin-top: 120px;
+}
+
+.footer-warning {
+  margin-top: 40px;
   font-family:'Creepster', cursive;
   font-size:11px;
   color:#8b0000;
-  margin-bottom:30px;
   opacity:0.7;
 }
 
@@ -314,7 +296,6 @@ header h1 {
   <a href="#">Contact</a>
 </div>
 
-<!-- LOADER WITH BLOOD INTRO -->
 <div id="loader">
   <div class="intro-text">VAMP SELECTION</div>
   <div class="caution">⚠️ REPS / ARCHIVE ITEMS – ENTER AT YOUR OWN RISK</div>
@@ -346,7 +327,6 @@ header h1 {
   <a href="https://www.instagram.com/daggerdick_77/" target="_blank">Instagram</a>
 </div>
 
-<!-- ⚠️ BOTTOM WARNING -->
 <div class="footer-warning">
 ⚠️ ALL PRODUCTS ARE REPS / FOR FASHION PURPOSES ONLY — FOLLOW FOR MORE
 </div>
@@ -369,6 +349,19 @@ function toggleMenu(){
 window.onload=()=>{
   setTimeout(()=>loader.classList.add("hide"),1600);
 };
+
+/* SCROLL FOLLOW EFFECT */
+window.addEventListener("scroll", () => {
+  const scrollY = window.scrollY;
+
+  const insta = document.querySelector(".insta");
+  const warning = document.querySelector(".footer-warning");
+
+  if (insta && warning) {
+    insta.style.transform = `translateY(${scrollY * 0.4}px)`;
+    warning.style.transform = `translateY(${scrollY * 0.45}px)`;
+  }
+});
 
 let currentProduct="";
 let currentIndex=0;
