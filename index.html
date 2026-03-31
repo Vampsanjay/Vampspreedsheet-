@@ -38,7 +38,7 @@ h1 {
 }
 
 /* SIDEBAR */
-.sidebar {
+#sidebar {
   position:fixed;
   top:0;
   left:-260px;
@@ -51,19 +51,19 @@ h1 {
   z-index:1000;
 }
 
-.sidebar a {
+#sidebar a {
   display:block;
   margin:20px 0;
   color:#777;
   text-decoration:none;
 }
 
-.sidebar a:hover {
+#sidebar a:hover {
   color:#fff;
 }
 
 /* OVERLAY */
-.overlay {
+#overlay {
   position:fixed;
   width:100%;
   height:100%;
@@ -133,7 +133,7 @@ h1 {
 }
 
 /* MODAL */
-.modal {
+#modal {
   display:none;
   position:fixed;
   width:100%;
@@ -163,7 +163,7 @@ h1 {
 }
 
 /* DM BOX */
-.dm-box {
+#dmPreview {
   margin:20px;
   padding:10px;
   border:1px solid #333;
@@ -185,13 +185,13 @@ h1 {
 <body>
 
 <!-- MENU -->
-<div id="sidebar" class="sidebar">
+<div id="sidebar">
   <a onclick="filter('all'); closeMenu()">ALL ITEMS</a>
   <a onclick="filter('shoes'); closeMenu()">SHOES</a>
   <a onclick="filter('new'); closeMenu()">NEW DROPS</a>
 </div>
 
-<div id="overlay" class="overlay" onclick="closeMenu()"></div>
+<div id="overlay" onclick="closeMenu()"></div>
 
 <header>
   <div class="menu-btn" onclick="openMenu()">☰</div>
@@ -202,8 +202,9 @@ h1 {
 
 <section class="container">
 
+<!-- RICK -->
 <div class="card" data-type="shoes new" onclick="openModal('rick')">
-  <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk-Product.jpg">
+  <img src="IMG_0653.webp">
   <div class="card-content">
     RICK OWENS GEOBASKET
     <div class="price">¥120,000</div>
@@ -212,8 +213,9 @@ h1 {
   </div>
 </div>
 
+<!-- BALENCIAGA -->
 <div class="card" data-type="shoes new" onclick="openModal('balenciaga')">
-  <img src="https://balenciaga.dam.kering.com/m/2d3e9f1f6e0f7a0f/Medium-677390W2F701000_F.jpg">
+  <img src="IMG_0663.jpeg">
   <div class="card-content">
     BALENCIAGA FURRY MULE
     <div class="price">¥95,000</div>
@@ -221,22 +223,13 @@ h1 {
   </div>
 </div>
 
-<div class="card" data-type="shoes" onclick="openModal('rick2')">
-  <img src="https://images.stockx.com/images/Rick-Owens-Ramones-Black.png">
-  <div class="card-content">
-    RICK OWENS RAMONES
-    <div class="price">¥110,000</div>
-    <div class="viewers">14 viewing</div>
-  </div>
-</div>
-
 </section>
 
 <!-- MODAL -->
-<div id="modal" class="modal">
+<div id="modal">
   <div class="close" onclick="closeModal()">✕</div>
   <div id="modalContent"></div>
-  <div id="dmPreview" class="dm-box"></div>
+  <div id="dmPreview"></div>
   <div class="buy-btn" onclick="buyNow()">SEND DM</div>
 </div>
 
@@ -245,19 +238,19 @@ let currentProduct = "";
 
 /* MENU */
 function openMenu(){
-  sidebar.style.left="0";
-  overlay.style.display="block";
+  document.getElementById("sidebar").style.left = "0";
+  document.getElementById("overlay").style.display = "block";
 }
 
 function closeMenu(){
-  sidebar.style.left="-260px";
-  overlay.style.display="none";
+  document.getElementById("sidebar").style.left = "-260px";
+  document.getElementById("overlay").style.display = "none";
 }
 
 /* FILTER */
 function filter(type){
   document.querySelectorAll(".card").forEach(c=>{
-    c.style.display=(type==="all"||c.dataset.type.includes(type))?"block":"none";
+    c.style.display = (type==="all" || c.dataset.type.includes(type)) ? "block" : "none";
   });
 }
 
@@ -265,39 +258,34 @@ function filter(type){
 function openModal(product){
 
   if(product==="rick"){
-    currentProduct="Rick Owens Geobasket Black Milk";
-    modalContent.innerHTML=`
+    currentProduct="Rick Owens Geobasket";
+    document.getElementById("modalContent").innerHTML=`
       <div class="gallery">
-        <img src=IMG_0653.webp
+        <img src="IMG_0653.webp">
+      </div>`;
+  }
 
   if(product==="balenciaga"){
     currentProduct="Balenciaga Furry Mule";
-    modalContent.innerHTML=`
+    document.getElementById("modalContent").innerHTML=`
       <div class="gallery">
-        <img src="https://balenciaga.dam.kering.com/m/2d3e9f1f6e0f7a0f/Medium-677390W2F701000_F.jpg">
+        <img src="IMG_0663.jpeg">
       </div>`;
   }
 
-  if(product==="rick2"){
-    currentProduct="Rick Owens Ramones";
-    modalContent.innerHTML=`
-      <div class="gallery">
-        <img src="https://images.stockx.com/images/Rick-Owens-Ramones-Black.png">
-      </div>`;
-  }
+  document.getElementById("dmPreview").innerText =
+    "Message:\nI want to buy: " + currentProduct;
 
-  dmPreview.innerText="Message:\nI want to buy: "+currentProduct;
-
-  modal.style.display="block";
+  document.getElementById("modal").style.display = "block";
 }
 
 function closeModal(){
-  modal.style.display="none";
+  document.getElementById("modal").style.display = "none";
 }
 
 /* BUY */
 function buyNow(){
-  let msg="I want to buy: "+currentProduct;
+  let msg = "I want to buy: " + currentProduct;
   navigator.clipboard.writeText(msg);
   window.open("https://www.instagram.com/daggerdick_77/","_blank");
 }
