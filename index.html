@@ -9,6 +9,62 @@
 <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Unbounded:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
+   /* =========================
+   🎬 CINEMATIC OVERLAY (SAFE)
+========================= */
+
+/* 🌫️ fog */
+.fog-layer {
+  position:fixed;
+  top:0;
+  left:0;
+  width:200%;
+  height:100%;
+  background:url('https://i.ibb.co/7QpKsCX/fog.png') repeat-x;
+  opacity:0.12;
+  animation:fogMove 80s linear infinite;
+  pointer-events:none;
+  z-index:1;
+}
+
+@keyframes fogMove {
+  0% { transform:translateX(0); }
+  100% { transform:translateX(-50%); }
+}
+
+/* ⚡ lightning */
+.lightning {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:white;
+  opacity:0;
+  pointer-events:none;
+  z-index:2;
+}
+
+/* 🎞️ subtle film grain */
+.grain {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:url('https://i.ibb.co/2t7WZ5r/grain.png');
+  opacity:0.05;
+  pointer-events:none;
+  z-index:3;
+}
+
+/* 🩸 stronger intro pulse (ADD ONLY) */
+.intro-text {
+  animation: drip 2s infinite alternate, cinematicPulse 4s infinite;
+}
+
+@keyframes cinematicPulse {
+  0%,100% { filter:brightness(1); }
+  50% { filter:brightness(1.4); }
+}
 
 /* =========================
    🌲 BACKGROUND
@@ -280,6 +336,15 @@ header h1 {
 </head>
 
 <body>
+   <!-- 🎬 CINEMATIC LAYERS -->
+<div class="fog-layer"></div>
+<div class="lightning" id="lightning"></div>
+<div class="grain"></div>
+
+<!-- 🔊 AMBIENT SOUND -->
+<audio id="ambientSound" loop>
+  <source src="https://www.fesliyanstudios.com/play-mp3/387" type="audio/mpeg">
+</audio>
 
 <div class="menu-btn" onclick="toggleMenu()">☰</div>
 
@@ -334,6 +399,28 @@ header h1 {
 </div>
 
 <script>
+   /* =========================
+   🎬 CINEMATIC SCRIPT (SAFE)
+========================= */
+
+/* ⚡ random lightning (no conflict) */
+setInterval(()=>{
+  if(Math.random() > 0.9){
+    const l = document.getElementById("lightning");
+    l.style.opacity = 0.8;
+    setTimeout(()=> l.style.opacity = 0, 120);
+  }
+}, 4000);
+
+/* 🔊 enable sound after user interaction */
+document.addEventListener("click", ()=>{
+  const audio = document.getElementById("ambientSound");
+  if(audio && audio.paused){
+    audio.volume = 0.4;
+    audio.play().catch(()=>{});
+  }
+});
+   
 
 /* MENU */
 function toggleMenu(){
