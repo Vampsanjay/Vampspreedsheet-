@@ -13,39 +13,53 @@ body {
   background:#050505;
   color:#eee;
   font-family:'Unbounded', sans-serif;
-  overflow-x:hidden;
 }
 
-/* GLITCH TITLE */
-h1 {
-  text-align:center;
-  margin-top:30px;
-  letter-spacing:6px;
-  animation:flicker 2s infinite;
-}
-
-@keyframes flicker {
-  0% {opacity:1;}
-  50% {opacity:0.6;}
-  100% {opacity:1;}
-}
-
-/* NAV */
-.nav {
+/* HEADER */
+header {
   display:flex;
+  align-items:center;
   justify-content:center;
-  gap:20px;
   padding:20px;
+  border-bottom:1px solid #222;
+  position:relative;
 }
 
-.nav button {
-  background:none;
-  border:none;
-  color:#666;
+h1 {
+  letter-spacing:5px;
+  font-size:20px;
+}
+
+/* HAMBURGER */
+.menu-btn {
+  position:absolute;
+  left:20px;
+  font-size:20px;
   cursor:pointer;
 }
 
-.nav button:hover {
+/* SIDE MENU */
+.sidebar {
+  position:fixed;
+  top:0;
+  left:-250px;
+  width:250px;
+  height:100%;
+  background:#000;
+  border-right:1px solid #222;
+  transition:0.3s;
+  padding:20px;
+}
+
+.sidebar a {
+  display:block;
+  margin:20px 0;
+  color:#aaa;
+  text-decoration:none;
+  font-size:14px;
+}
+
+.sidebar a:hover {
   color:#fff;
 }
 
@@ -53,57 +67,36 @@ h1 {
 .container {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:40px;
-  padding:40px;
+  gap:30px;
+  padding:30px;
 }
 
 /* CARD */
 .card {
-  position:relative;
   background:#0d0d0d;
   border:1px solid #222;
-  overflow:hidden;
   cursor:pointer;
+  transition:0.3s;
+}
+
+.card:hover {
+  transform:scale(1.03);
 }
 
 .card img {
   width:100%;
-  height:320px;
+  height:300px;
   object-fit:cover;
-  transition:0.4s;
   filter:grayscale(100%);
 }
 
-.card:hover img {
-  transform:scale(1.1) rotate(1deg);
-  filter:grayscale(0%);
+.card-content {
+  padding:15px;
 }
 
-/* BADGE */
-.badge {
-  position:absolute;
-  top:10px;
-  left:10px;
-  font-size:10px;
-  border:1px solid #fff;
-  padding:4px 6px;
-}
-
-/* VIEWERS */
-.viewers {
-  position:absolute;
-  bottom:10px;
-  right:10px;
-  font-size:10px;
-  color:#aaa;
-}
-
-/* COUNTDOWN */
-.countdown {
-  text-align:center;
-  font-size:14px;
-  margin-top:10px;
-  color:#aaa;
+.price {
+  color:#888;
+  font-size:12px;
 }
 
 /* MODAL */
@@ -120,7 +113,14 @@ h1 {
   width:100%;
 }
 
-/* BUTTON */
+.close {
+  position:fixed;
+  top:20px;
+  right:20px;
+  cursor:pointer;
+}
+
+/* BUY */
 .buy-btn {
   margin:20px;
   padding:15px;
@@ -128,70 +128,49 @@ h1 {
   text-align:center;
   cursor:pointer;
 }
-
-/* PASSWORD */
-.lock {
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:#000;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-}
-
-input {
-  padding:10px;
-  background:#111;
-  border:1px solid #333;
-  color:#fff;
-}
 </style>
 </head>
 
 <body>
 
-<!-- LOCK SCREEN -->
-<div id="lock" class="lock">
-  <h1>PRIVATE DROP</h1>
-  <input type="password" id="pass" placeholder="Enter password">
-  <button onclick="unlock()">ENTER</button>
+<!-- MENU -->
+<div class="sidebar" id="sidebar">
+  <a href="#" onclick="filter('all')">ALL ITEMS</a>
+  <a href="#" onclick="filter('shoes')">SHOES</a>
+  <a href="#" onclick="filter('clothes')">CLOTHES</a>
+  <a href="#" onclick="filter('accessories')">ACCESSORIES</a>
+  <a href="#" onclick="filter('new')">NEW DROPS</a>
 </div>
 
-<!-- MAIN -->
-<div id="site" style="display:none;">
+<header>
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+  <h1>VAMP SELECTION</h1>
+</header>
 
-<h1>VAMP SELECTION</h1>
-
-<div class="countdown" id="countdown"></div>
-
-<div class="nav">
-  <button onclick="filter('all')">ALL</button>
-  <button onclick="filter('new')">NEW</button>
-  <button onclick="filter('sold')">SOLD</button>
-</div>
-
+<!-- PRODUCTS -->
 <section class="container">
 
-<div class="card new" data-type="new" onclick="openModal('rick')">
-  <div class="badge">NEW</div>
+<div class="card" data-type="shoes" onclick="openModal('rick')">
   <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">
-  <div class="viewers">12 viewing</div>
+  <div class="card-content">
+    RICK OWENS GEOBASKET
+    <div class="price">¥120,000</div>
+  </div>
 </div>
 
-<div class="card sold" data-type="sold">
-  <div class="badge" style="border-color:red;color:red;">SOLD OUT</div>
+<div class="card" data-type="shoes">
   <img src="https://balenciaga.dam.kering.com/m/2d3e9f1f6e0f7a0f/Medium-677390W2F701000_F.jpg">
+  <div class="card-content">
+    BALENCIAGA FURRY MULE
+    <div class="price">¥95,000</div>
+  </div>
 </div>
 
 </section>
 
-</div>
-
 <!-- MODAL -->
 <div id="modal" class="modal">
-  <div onclick="closeModal()" style="position:fixed;top:20px;right:20px;">✕</div>
+  <div class="close" onclick="closeModal()">✕</div>
   <div id="modalContent"></div>
   <div class="buy-btn" onclick="buyNow()">SEND DM</div>
 </div>
@@ -199,31 +178,11 @@ input {
 <script>
 let currentProduct = "";
 
-/* PASSWORD */
-function unlock() {
-  let pass = document.getElementById("pass").value;
-  if(pass === "vamp") {
-    document.getElementById("lock").style.display = "none";
-    document.getElementById("site").style.display = "block";
-  } else {
-    alert("Wrong password");
-  }
+/* MENU */
+function toggleMenu() {
+  let menu = document.getElementById("sidebar");
+  menu.style.left = (menu.style.left === "0px") ? "-250px" : "0px";
 }
-
-/* COUNTDOWN */
-let dropDate = new Date().getTime() + 86400000;
-
-setInterval(() => {
-  let now = new Date().getTime();
-  let diff = dropDate - now;
-
-  let h = Math.floor(diff / (1000*60*60));
-  let m = Math.floor((diff % (1000*60*60)) / (1000*60));
-  let s = Math.floor((diff % (1000*60)) / 1000);
-
-  document.getElementById("countdown").innerText =
-    "NEXT DROP IN: " + h + "h " + m + "m " + s + "s";
-}, 1000);
 
 /* FILTER */
 function filter(type) {
@@ -236,6 +195,7 @@ function filter(type) {
 /* MODAL */
 function openModal(product) {
   currentProduct = "RICK OWENS GEOBASKET";
+
   document.getElementById("modalContent").innerHTML =
     `<img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">`;
 
