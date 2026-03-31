@@ -18,8 +18,8 @@ body {
 /* HEADER */
 header {
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   padding:20px;
   border-bottom:1px solid #222;
   position:relative;
@@ -27,40 +27,51 @@ header {
 
 h1 {
   letter-spacing:5px;
-  font-size:20px;
+  font-size:18px;
 }
 
-/* HAMBURGER */
+/* MENU BUTTON */
 .menu-btn {
   position:absolute;
   left:20px;
-  font-size:20px;
+  font-size:22px;
   cursor:pointer;
 }
 
-/* SIDE MENU */
+/* SIDEBAR (SMOOTH) */
 .sidebar {
   position:fixed;
   top:0;
-  left:-250px;
-  width:250px;
+  left:-260px;
+  width:260px;
   height:100%;
   background:#000;
   border-right:1px solid #222;
-  transition:0.3s;
-  padding:20px;
+  transition:0.4s ease;
+  padding:30px 20px;
+  z-index:1000;
 }
 
 .sidebar a {
   display:block;
   margin:20px 0;
-  color:#aaa;
+  color:#777;
   text-decoration:none;
   font-size:14px;
+  letter-spacing:1px;
 }
 
 .sidebar a:hover {
   color:#fff;
+}
+
+/* OVERLAY */
+.overlay {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  display:none;
 }
 
 /* GRID */
@@ -71,7 +82,6 @@ h1 {
   padding:30px;
 }
 
-/* CARD */
 .card {
   background:#0d0d0d;
   border:1px solid #222;
@@ -107,17 +117,29 @@ h1 {
   height:100%;
   background:#000;
   overflow:auto;
+  z-index:2000;
 }
 
 .modal img {
   width:100%;
+  margin-bottom:20px;
 }
 
 .close {
   position:fixed;
   top:20px;
   right:20px;
+  font-size:20px;
   cursor:pointer;
+}
+
+/* DM BOX */
+.dm-box {
+  margin:20px;
+  padding:10px;
+  border:1px solid #333;
+  font-size:12px;
+  color:#aaa;
 }
 
 /* BUY */
@@ -134,23 +156,23 @@ h1 {
 <body>
 
 <!-- MENU -->
-<div class="sidebar" id="sidebar">
-  <a href="#" onclick="filter('all')">ALL ITEMS</a>
-  <a href="#" onclick="filter('shoes')">SHOES</a>
-  <a href="#" onclick="filter('clothes')">CLOTHES</a>
-  <a href="#" onclick="filter('accessories')">ACCESSORIES</a>
-  <a href="#" onclick="filter('new')">NEW DROPS</a>
+<div id="sidebar" class="sidebar">
+  <a onclick="filter('all'); closeMenu()">ALL ITEMS</a>
+  <a onclick="filter('shoes'); closeMenu()">SHOES</a>
+  <a onclick="filter('new'); closeMenu()">NEW DROPS</a>
 </div>
 
+<div id="overlay" class="overlay" onclick="closeMenu()"></div>
+
 <header>
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+  <div class="menu-btn" onclick="openMenu()">☰</div>
   <h1>VAMP SELECTION</h1>
 </header>
 
 <!-- PRODUCTS -->
 <section class="container">
 
-<div class="card" data-type="shoes" onclick="openModal('rick')">
+<div class="card" data-type="shoes new" onclick="openModal('rick')">
   <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">
   <div class="card-content">
     RICK OWENS GEOBASKET
@@ -172,6 +194,9 @@ h1 {
 <div id="modal" class="modal">
   <div class="close" onclick="closeModal()">✕</div>
   <div id="modalContent"></div>
+
+  <div id="dmPreview" class="dm-box"></div>
+
   <div class="buy-btn" onclick="buyNow()">SEND DM</div>
 </div>
 
@@ -179,25 +204,38 @@ h1 {
 let currentProduct = "";
 
 /* MENU */
-function toggleMenu() {
-  let menu = document.getElementById("sidebar");
-  menu.style.left = (menu.style.left === "0px") ? "-250px" : "0px";
+function openMenu() {
+  document.getElementById("sidebar").style.left = "0";
+  document.getElementById("overlay").style.display = "block";
+}
+
+function closeMenu() {
+  document.getElementById("sidebar").style.left = "-260px";
+  document.getElementById("overlay").style.display = "none";
 }
 
 /* FILTER */
 function filter(type) {
   document.querySelectorAll(".card").forEach(card => {
+    let types = card.dataset.type;
     card.style.display =
-      (type === "all" || card.dataset.type === type) ? "block" : "none";
+      (type === "all" || types.includes(type)) ? "block" : "none";
   });
 }
 
 /* MODAL */
 function openModal(product) {
-  currentProduct = "RICK OWENS GEOBASKET";
+  const content = document.getElementById("modalContent");
+  const preview = document.getElementById("dmPreview");
 
-  document.getElementById("modalContent").innerHTML =
-    `<img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">`;
+  if(product === 'rick') {
+    currentProduct = "RICK OWENS GEOBASKET BLACK MILK";
+    content.innerHTML = `
+      <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">
+    `;
+  }
+
+  preview.innerText = "Message:\nI want to buy: " + currentProduct;
 
   document.getElementById("modal").style.display = "block";
 }
@@ -209,8 +247,9 @@ function closeModal() {
 /* BUY */
 function buyNow() {
   let msg = "I want to buy: " + currentProduct;
-  navigator.clipboard.writeText(msg);
-  window.open("https://www.instagram.com/daggerdick_77/", "_blank");
+  navigator.clipboard.writeText(msg).then(() => {
+    window.open("https://www.instagram.com/daggerdick_77/", "_blank");
+  });
 }
 </script>
 
