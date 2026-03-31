@@ -1,131 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Vamp Selection</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vamp Selection</title>
 
-  <!-- Google Font (dark aesthetic) -->
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Unbounded', sans-serif;
-    }
+<style>
+body {
+  margin:0;
+  background:#0a0a0a;
+  color:#eee;
+  font-family:'Unbounded', sans-serif;
+}
 
-    body {
-      background-color: #0a0a0a;
-      color: #e5e5e5;
-    }
+header {
+  text-align:center;
+  padding:30px;
+  border-bottom:1px solid #222;
+}
 
-    header {
-      text-align: center;
-      padding: 30px;
-      border-bottom: 1px solid #222;
-    }
+h1 {
+  letter-spacing:4px;
+}
 
-    header h1 {
-      font-size: 32px;
-      letter-spacing: 4px;
-      color: #ffffff;
-    }
+.container {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:30px;
+  padding:40px;
+}
 
-    header p {
-      font-size: 12px;
-      color: #777;
-      margin-top: 8px;
-    }
+.card {
+  background:#111;
+  border:1px solid #222;
+  cursor:pointer;
+  transition:0.3s;
+}
 
-    .container {
-      padding: 40px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 30px;
-    }
+.card:hover {
+  transform:scale(1.03);
+}
 
-    .card {
-      background: #111;
-      border: 1px solid #222;
-      transition: 0.3s;
-      overflow: hidden;
-    }
+.card img {
+  width:100%;
+  height:300px;
+  object-fit:cover;
+  filter:grayscale(100%);
+}
 
-    .card:hover {
-      transform: scale(1.03);
-      border-color: #555;
-    }
+.card-content {
+  padding:20px;
+}
 
-    .card img {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
-      filter: grayscale(100%) contrast(120%);
-    }
+.price {
+  color:#888;
+  font-size:12px;
+}
 
-    .card-content {
-      padding: 20px;
-    }
+/* MODAL */
+.modal {
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  overflow-y:auto;
+}
 
-    .card-title {
-      font-size: 14px;
-      letter-spacing: 1px;
-      margin-bottom: 10px;
-    }
+.modal-content {
+  padding:20px;
+}
 
-    .price {
-      font-size: 12px;
-      color: #999;
-    }
+.modal img {
+  width:100%;
+  margin-bottom:20px;
+}
 
-    footer {
-      text-align: center;
-      padding: 20px;
-      border-top: 1px solid #222;
-      font-size: 12px;
-      color: #666;
-    }
-  </style>
+.close {
+  position:fixed;
+  top:20px;
+  right:20px;
+  font-size:20px;
+  cursor:pointer;
+}
+
+.buy-btn {
+  display:block;
+  text-align:center;
+  padding:15px;
+  border:1px solid #fff;
+  margin:20px;
+  text-decoration:none;
+  color:#fff;
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <h1>VAMP SELECTION</h1>
-  <p>Dark Archive Fashion</p>
+<h1>VAMP SELECTION</h1>
+<p>Dark Archive Fashion</p>
 </header>
 
 <section class="container">
 
-  <!-- Product 1 -->
-<div class="card">
-  <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png" alt="Rick Owens Geobasket">
+<div class="card" onclick="openModal('rick')">
+  <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">
   <div class="card-content">
-    <div class="card-title">
-      RICK OWENS ジオバスケット BLACK MILK
-    </div>
-    <div class="price">¥ --</div>
+    RICK OWENS ジオバスケット BLACK MILK
+    <div class="price">¥120,000</div>
   </div>
 </div>
 
-<!-- Product 2 -->
-<div class="card">
-  <img src="https://balenciaga.dam.kering.com/m/2d3e9f1f6e0f7a0f/Medium-677390W2F701000_F.jpg" alt="Balenciaga Mule">
+<div class="card" onclick="openModal('balenciaga')">
+  <img src="https://balenciaga.dam.kering.com/m/2d3e9f1f6e0f7a0f/Medium-677390W2F701000_F.jpg">
   <div class="card-content">
-    <div class="card-title">
-      BALENCIAGA ブラック ウィメンズ FURRY オープンミュール
-    </div>
-    <div class="price">¥ --</div>
+    BALENCIAGA FURRY ミュール
+    <div class="price">¥95,000</div>
   </div>
 </div>
 
 </section>
 
-<footer>
-  © 2026 Vamp Selection
-</footer>
+<!-- MODAL -->
+<div id="modal" class="modal">
+  <span class="close" onclick="closeModal()">✕</span>
+  <div class="modal-content" id="modalContent"></div>
+
+  <a class="buy-btn" href="https://instagram.com/YOUR_USERNAME" target="_blank">
+    DM ON INSTAGRAM TO BUY
+  </a>
+</div>
+
+<script>
+function openModal(product) {
+  const modal = document.getElementById("modal");
+  const content = document.getElementById("modalContent");
+
+  if(product === 'rick') {
+    content.innerHTML = `
+      <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">
+      <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk-Product.jpg">
+      <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk-Detail.jpg">
+    `;
+  }
+
+  if(product === 'balenciaga') {
+    content.innerHTML = `
+      <img src="https://balenciaga.dam.kering.com/m/2d3e9f1f6e0f7a0f/Medium-677390W2F701000_F.jpg">
+      <img src="https://balenciaga.dam.kering.com/m/abc123/Medium-Detail.jpg">
+    `;
+  }
+
+  modal.style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
+</script>
 
 </body>
 </html>
