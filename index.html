@@ -9,14 +9,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Unbounded:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-   <script>
-// Simple parallax effect for background
-window.addEventListener("scroll", () => {
-  const scrollY = window.scrollY;
-  // Adjust the factor to make it pop a little
-  document.body.style.backgroundPosition = `center ${scrollY * 0.3}px`;
-});
-</script>
 
 /* =========================
    🌲 BACKGROUND + PAGE LENGTH
@@ -32,7 +24,14 @@ body {
   background: url('IMG_0672.jpeg') no-repeat center center fixed;
   background-size: cover;
 }
-
+<script>
+// Simple parallax effect for background
+window.addEventListener("scroll", () => {
+  const scrollY = window.scrollY;
+  // Adjust the factor to make it pop a little
+  document.body.style.backgroundPosition = `center ${scrollY * 0.3}px`;
+});
+</script>
 /* =========================
    🩸 INTRO
 ========================= */
