@@ -6,7 +6,6 @@
 
 <title>Vamp Selection</title>
 
-<!-- REVENGE STYLE FONT -->
 <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Unbounded:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -27,27 +26,41 @@ body {
 }
 
 /* =========================
-   🩸 EVIL TITLE FONT
+   🩸 MASSIVE BLOOD INTRO
 ========================= */
 
-header h1 {
+.intro-text {
   font-family:'Creepster', cursive;
+  font-size:48px;
   color:#b30000;
-  font-size:28px;
-  letter-spacing:4px;
+  text-align:center;
+  letter-spacing:6px;
 
   text-shadow:
-    0 0 5px #ff0000,
-    0 0 15px #8b0000,
-    0 0 30px #000;
+    0 0 10px #ff0000,
+    0 0 25px #8b0000,
+    0 0 40px #000;
 
-  animation:flicker 2.5s infinite;
+  animation: drip 2s infinite alternate;
 }
 
-/* subtle evil flicker */
-@keyframes flicker {
-  0%,18%,22%,25%,53%,57%,100% { opacity:1; }
-  20%,24%,55% { opacity:0.4; }
+/* dripping illusion */
+@keyframes drip {
+  0% { transform:translateY(0); }
+  100% { transform:translateY(6px); }
+}
+
+/* =========================
+   ⚠️ CAUTION TEXT
+========================= */
+
+.caution {
+  font-family:'Creepster', cursive;
+  font-size:12px;
+  text-align:center;
+  color:#8b0000;
+  margin-top:10px;
+  opacity:0.8;
 }
 
 /* =========================
@@ -60,16 +73,10 @@ header h1 {
   height:100%;
   background:#000;
   display:flex;
+  flex-direction:column;
   justify-content:center;
   align-items:center;
   z-index:9999;
-}
-
-.blood {
-  font-family:'Creepster', cursive;
-  color:#8b0000;
-  font-size:26px;
-  letter-spacing:6px;
 }
 
 #loader.hide {
@@ -122,6 +129,12 @@ header {
   position:relative;
 }
 
+header h1 {
+  font-family:'Creepster', cursive;
+  color:#b30000;
+  font-size:28px;
+}
+
 /* =========================
    GRID
 ========================= */
@@ -147,7 +160,7 @@ header {
 .stock { color:red; font-size:11px; }
 
 /* =========================
-   🚀 MODAL (FIXED SMOOTH)
+   MODAL (SMOOTH)
 ========================= */
 
 #modal {
@@ -156,11 +169,8 @@ header {
   width:100%;
   height:100%;
   background:rgba(0,0,0,0.96);
-
   transform:translateY(100%);
   transition:transform 0.55s cubic-bezier(0.22,1,0.36,1);
-
-  will-change:transform;
   z-index:2000;
   padding-top:60px;
 }
@@ -179,10 +189,7 @@ header {
   z-index:3000;
 }
 
-/* =========================
-   GALLERY
-========================= */
-
+/* GALLERY */
 .gallery {
   overflow:hidden;
   position:relative;
@@ -190,8 +197,7 @@ header {
 
 .gallery-track {
   display:flex;
-  transition:transform 0.6s ease;
-  will-change:transform;
+  transition:0.6s;
 }
 
 .gallery img {
@@ -199,7 +205,6 @@ header {
   flex:0 0 100%;
   opacity:0.6;
   filter:blur(6px);
-  transition:0.6s;
 }
 
 .gallery img.active {
@@ -258,6 +263,19 @@ header {
   margin:60px 0;
 }
 
+/* =========================
+   ⚠️ BOTTOM DISCLAIMER
+========================= */
+
+.footer-warning {
+  text-align:center;
+  font-family:'Creepster', cursive;
+  font-size:11px;
+  color:#8b0000;
+  margin-bottom:30px;
+  opacity:0.7;
+}
+
 </style>
 </head>
 
@@ -271,8 +289,10 @@ header {
   <a href="#">Contact</a>
 </div>
 
+<!-- LOADER WITH BLOOD INTRO -->
 <div id="loader">
-  <h1 class="blood">VAMP SELECTION</h1>
+  <div class="intro-text">VAMP SELECTION</div>
+  <div class="caution">⚠️ REPS / ARCHIVE ITEMS – ENTER AT YOUR OWN RISK</div>
 </div>
 
 <header>
@@ -301,6 +321,11 @@ header {
   <a href="https://www.instagram.com/daggerdick_77/" target="_blank">Instagram</a>
 </div>
 
+<!-- ⚠️ BOTTOM WARNING -->
+<div class="footer-warning">
+⚠️ ALL PRODUCTS ARE REPS / FOR FASHION PURPOSES ONLY — FOLLOW FOR MORE
+</div>
+
 <div id="modal">
   <div class="close" onclick="closeModal()">❌</div>
   <div id="modalContent"></div>
@@ -317,7 +342,7 @@ function toggleMenu(){
 
 /* LOADER */
 window.onload=()=>{
-  setTimeout(()=>loader.classList.add("hide"),1200);
+  setTimeout(()=>loader.classList.add("hide"),1600);
 };
 
 let currentProduct="";
