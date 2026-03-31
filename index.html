@@ -11,61 +11,7 @@
 <style>
 
 /* =========================
-   🎬 CINEMATIC ADDITIONS
-========================= */
-
-.fog-layer {
-  position:fixed;
-  top:0;
-  left:0;
-  width:200%;
-  height:100%;
-  background:url('https://i.ibb.co/7QpKsCX/fog.png') repeat-x;
-  opacity:0.12;
-  animation:fogMove 80s linear infinite;
-  pointer-events:none;
-  z-index:1;
-}
-
-@keyframes fogMove {
-  0% { transform:translateX(0); }
-  100% { transform:translateX(-50%); }
-}
-
-.lightning {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:white;
-  opacity:0;
-  pointer-events:none;
-  z-index:2;
-}
-
-.grain {
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:url('https://i.ibb.co/2t7WZ5r/grain.png');
-  opacity:0.05;
-  pointer-events:none;
-  z-index:3;
-}
-
-/* add extra pulse WITHOUT removing old animation */
-.intro-text {
-  animation: drip 2s infinite alternate, cinematicPulse 4s infinite;
-}
-
-@keyframes cinematicPulse {
-  0%,100% { filter:brightness(1); }
-  50% { filter:brightness(1.4); }
-}
-
-/* =========================
-   🌲 ORIGINAL CODE (UNCHANGED)
+   🌲 BACKGROUND
 ========================= */
 
 body {
@@ -78,6 +24,10 @@ body {
   url('https://images.unsplash.com/photo-1470770903676-69b98201ea1c?grayscale')
   no-repeat center/cover fixed;
 }
+
+/* =========================
+   🩸 MASSIVE BLOOD INTRO
+========================= */
 
 .intro-text {
   font-family:'Creepster', cursive;
@@ -94,10 +44,15 @@ body {
   animation: drip 2s infinite alternate;
 }
 
+/* dripping illusion */
 @keyframes drip {
   0% { transform:translateY(0); }
   100% { transform:translateY(6px); }
 }
+
+/* =========================
+   ⚠️ CAUTION TEXT
+========================= */
 
 .caution {
   font-family:'Creepster', cursive;
@@ -107,6 +62,10 @@ body {
   margin-top:10px;
   opacity:0.8;
 }
+
+/* =========================
+   🩸 LOADER
+========================= */
 
 #loader {
   position:fixed;
@@ -125,6 +84,10 @@ body {
   transition:1s;
   pointer-events:none;
 }
+
+/* =========================
+   ☰ MENU
+========================= */
 
 .menu-btn{
   position:absolute;
@@ -155,6 +118,10 @@ body {
   text-decoration:none;
 }
 
+/* =========================
+   HEADER
+========================= */
+
 header {
   text-align:center;
   padding:25px;
@@ -168,6 +135,10 @@ header h1 {
   font-size:28px;
 }
 
+/* =========================
+   GRID
+========================= */
+
 .container {
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -175,6 +146,7 @@ header h1 {
   padding:40px 20px;
 }
 
+/* CARD */
 .card { cursor:pointer; }
 
 .card img {
@@ -186,6 +158,10 @@ header h1 {
 .name { font-size:13px; margin-top:10px; }
 .price { font-size:12px; color:#777; }
 .stock { color:red; font-size:11px; }
+
+/* =========================
+   MODAL (SMOOTH)
+========================= */
 
 #modal {
   position:fixed;
@@ -203,6 +179,7 @@ header h1 {
   transform:translateY(0);
 }
 
+/* CLOSE */
 .close {
   position:fixed;
   top:65px;
@@ -212,6 +189,7 @@ header h1 {
   z-index:3000;
 }
 
+/* GALLERY */
 .gallery {
   overflow:hidden;
   position:relative;
@@ -234,6 +212,7 @@ header h1 {
   filter:blur(0);
 }
 
+/* ARROWS */
 .arrow {
   position:absolute;
   top:50%;
@@ -246,6 +225,7 @@ header h1 {
 .arrow.left { left:10px; }
 .arrow.right { right:10px; }
 
+/* DOTS */
 .dots { text-align:center; }
 
 .dot {
@@ -262,6 +242,7 @@ header h1 {
   background:#fff;
 }
 
+/* DM */
 #dmPreview {
   margin:20px;
   font-size:12px;
@@ -276,10 +257,15 @@ header h1 {
   cursor:pointer;
 }
 
+/* INSTAGRAM */
 .insta {
   text-align:center;
   margin:60px 0;
 }
+
+/* =========================
+   ⚠️ BOTTOM DISCLAIMER
+========================= */
 
 .footer-warning {
   text-align:center;
@@ -295,15 +281,6 @@ header h1 {
 
 <body>
 
-<!-- 🎬 CINEMATIC LAYERS -->
-<div class="fog-layer"></div>
-<div class="lightning" id="lightning"></div>
-<div class="grain"></div>
-
-<audio id="ambientSound" loop>
-  <source src="https://www.fesliyanstudios.com/play-mp3/387" type="audio/mpeg">
-</audio>
-
 <div class="menu-btn" onclick="toggleMenu()">☰</div>
 
 <div class="side-menu" id="menu">
@@ -312,6 +289,7 @@ header h1 {
   <a href="#">Contact</a>
 </div>
 
+<!-- LOADER WITH BLOOD INTRO -->
 <div id="loader">
   <div class="intro-text">VAMP SELECTION</div>
   <div class="caution">⚠️ REPS / ARCHIVE ITEMS – ENTER AT YOUR OWN RISK</div>
@@ -343,6 +321,7 @@ header h1 {
   <a href="https://www.instagram.com/daggerdick_77/" target="_blank">Instagram</a>
 </div>
 
+<!-- ⚠️ BOTTOM WARNING -->
 <div class="footer-warning">
 ⚠️ ALL PRODUCTS ARE REPS / FOR FASHION PURPOSES ONLY — FOLLOW FOR MORE
 </div>
@@ -356,29 +335,12 @@ header h1 {
 
 <script>
 
-/* 🎬 cinematic script */
-setInterval(()=>{
-  if(Math.random()>0.9){
-    const l=document.getElementById("lightning");
-    l.style.opacity=0.8;
-    setTimeout(()=>l.style.opacity=0,120);
-  }
-},4000);
-
-document.addEventListener("click",()=>{
-  const audio=document.getElementById("ambientSound");
-  if(audio.paused){
-    audio.volume=0.4;
-    audio.play().catch(()=>{});
-  }
-});
-
-/* ORIGINAL JS */
-
+/* MENU */
 function toggleMenu(){
   document.getElementById("menu").classList.toggle("active");
 }
 
+/* LOADER */
 window.onload=()=>{
   setTimeout(()=>loader.classList.add("hide"),1600);
 };
