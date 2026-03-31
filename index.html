@@ -9,12 +9,37 @@
 
 <style>
 
-/* BASE */
+/* 🌲 BACKGROUND */
 body {
   margin:0;
-  background:#050505;
-  color:#eee;
   font-family:'Unbounded', sans-serif;
+  color:#eee;
+  background:url('https://images.unsplash.com/photo-1501785888041-af3ef285b470') no-repeat center/cover fixed;
+}
+
+/* DARK OVERLAY */
+body::before {
+  content:'';
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.75);
+  top:0;
+  left:0;
+  z-index:-1;
+}
+
+/* 🖱️ CURSOR */
+.cursor {
+  position:fixed;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:#fff;
+  pointer-events:none;
+  z-index:9999;
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 12px rgba(255,255,255,0.6);
 }
 
 /* 🩸 LOADER */
@@ -27,60 +52,23 @@ body {
   justify-content:center;
   align-items:center;
   z-index:9999;
-  flex-direction:column;
-  overflow:hidden;
 }
 
-/* BLOOD TEXT */
 .blood {
-  position:relative;
   color:#8b0000;
   font-size:22px;
   letter-spacing:6px;
   animation:pulse 1.5s infinite;
-  text-shadow:0 0 10px rgba(139,0,0,0.6);
-}
-
-/* MULTI DRIPS */
-.blood::before,
-.blood::after {
-  content:'';
-  position:absolute;
-  background:#8b0000;
-  width:2px;
-  height:0;
-  bottom:-5px;
-  animation:drip 2s infinite;
-  opacity:0.8;
-}
-
-.blood::before {
-  left:30%;
-  animation-delay:0.2s;
-}
-
-.blood::after {
-  left:65%;
-  animation-delay:0.6s;
-}
-
-@keyframes drip {
-  0% { height:0; opacity:0; }
-  40% { height:18px; opacity:1; }
-  100% { height:0; opacity:0; }
 }
 
 @keyframes pulse {
-  0% {opacity:0.5; transform:scale(0.95);}
-  50% {opacity:1; transform:scale(1);}
-  100% {opacity:0.5; transform:scale(0.95);}
+  0%,100%{opacity:0.5;}
+  50%{opacity:1;}
 }
 
-/* CINEMATIC EXIT */
 #loader.hide {
   opacity:0;
-  transform:scale(1.1);
-  transition:1.2s cubic-bezier(0.22,1,0.36,1);
+  transition:1s;
   pointer-events:none;
 }
 
@@ -89,11 +77,6 @@ header {
   text-align:center;
   padding:25px;
   border-bottom:1px solid #222;
-}
-
-h1 {
-  font-size:16px;
-  letter-spacing:4px;
 }
 
 /* GRID */
@@ -113,7 +96,7 @@ h1 {
   object-fit:cover;
 }
 
-.name { margin-top:12px; font-size:13px; }
+.name { font-size:13px; margin-top:10px; }
 .price { font-size:12px; color:#777; }
 .stock { color:red; font-size:11px; }
 
@@ -121,12 +104,10 @@ h1 {
 #modal {
   position:fixed;
   bottom:-100%;
-  left:0;
   width:100%;
   height:100%;
   background:rgba(0,0,0,0.96);
-  backdrop-filter:blur(10px);
-  transition:0.6s cubic-bezier(0.22,1,0.36,1);
+  transition:0.6s;
   z-index:2000;
   padding-top:60px;
   pointer-events:none;
@@ -143,35 +124,32 @@ h1 {
   top:60px;
   right:20px;
   font-size:24px;
-  z-index:3000;
   background:rgba(0,0,0,0.6);
   padding:8px 12px;
   border-radius:8px;
-  backdrop-filter:blur(6px);
   cursor:pointer;
+  z-index:3000;
 }
 
 /* GALLERY */
-.gallery { position:relative; overflow:hidden; }
+.gallery { overflow:hidden; position:relative; }
 
 .gallery-track {
   display:flex;
-  transition:transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  transition:0.6s;
 }
 
 .gallery img {
   width:100%;
   flex:0 0 100%;
-  filter:blur(6px);
   opacity:0.6;
-  transform:scale(1.05);
-  transition:all 0.8s ease;
+  filter:blur(6px);
+  transition:0.6s;
 }
 
 .gallery img.active {
-  filter:blur(0);
   opacity:1;
-  transform:scale(1);
+  filter:blur(0);
 }
 
 /* ARROWS */
@@ -179,32 +157,28 @@ h1 {
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-  font-size:22px;
   background:rgba(0,0,0,0.5);
-  padding:8px 12px;
+  padding:8px;
   cursor:pointer;
-  z-index:10;
 }
 
 .arrow.left { left:10px; }
 .arrow.right { right:10px; }
 
 /* DOTS */
-.dots { text-align:center; margin-top:10px; }
+.dots { text-align:center; }
 
 .dot {
-  display:inline-block;
   width:6px;
   height:6px;
-  margin:5px;
   background:#555;
+  display:inline-block;
+  margin:5px;
   border-radius:50%;
-  transition:all 0.4s ease;
 }
 
 .dot.active {
   width:16px;
-  border-radius:10px;
   background:#fff;
 }
 
@@ -223,31 +197,10 @@ h1 {
   cursor:pointer;
 }
 
-.buy-btn:hover {
-  background:#fff;
-  color:#000;
-}
-
 /* INSTAGRAM */
 .insta {
-  margin:60px 0;
   text-align:center;
-  font-size:12px;
-  color:#888;
-}
-
-.insta a {
-  display:inline-block;
-  margin-top:10px;
-  padding:10px 20px;
-  border:1px solid #fff;
-  color:#fff;
-  text-decoration:none;
-}
-
-.insta a:hover {
-  background:#fff;
-  color:#000;
+  margin:60px 0;
 }
 
 </style>
@@ -255,10 +208,8 @@ h1 {
 
 <body>
 
-<!-- 🔊 SOUND -->
-<audio id="introSound" src="intro.mp3"></audio>
+<div class="cursor" id="cursor"></div>
 
-<!-- 🩸 LOADER -->
 <div id="loader">
   <h1 class="blood">VAMP SELECTION</h1>
 </div>
@@ -271,7 +222,7 @@ h1 {
 
 <div class="card" onclick="openModal('rick')">
   <img src="IMG_0653.webp">
-  <div class="name">Rick Owens<br>Geobasket Black Milk</div>
+  <div class="name">Rick Owens<br>Geobasket</div>
   <div class="price">¥120,000</div>
   <div class="stock">Only 1 left</div>
 </div>
@@ -285,14 +236,10 @@ h1 {
 </section>
 
 <div class="insta">
-  ARCHIVE ENERGY — FOLLOW FOR MORE  
-  <br>
-  <a href="https://www.instagram.com/daggerdick_77/" target="_blank">
-    Instagram ↗
-  </a>
+  FOLLOW FOR MORE<br>
+  <a href="https://www.instagram.com/daggerdick_77/" target="_blank">Instagram</a>
 </div>
 
-<!-- MODAL -->
 <div id="modal">
   <div class="close" onclick="closeModal()">❌</div>
   <div id="modalContent"></div>
@@ -303,26 +250,31 @@ h1 {
 <script>
 
 /* LOADER */
-window.onload = () => {
-  const sound = document.getElementById("introSound");
-  if(sound){
-    sound.volume = 0.3;
-    sound.play().catch(()=>{});
-  }
-
-  setTimeout(()=>{
-    document.getElementById("loader").classList.add("hide");
-  },1400);
+window.onload=()=>{
+  setTimeout(()=>loader.classList.add("hide"),1200);
 };
+
+/* CURSOR */
+const cursor=document.getElementById("cursor");
+document.addEventListener("mousemove",(e)=>{
+  cursor.style.left=e.clientX+"px";
+  cursor.style.top=e.clientY+"px";
+});
+
+/* PARALLAX */
+window.addEventListener("scroll",()=>{
+  document.body.style.backgroundPositionY=window.scrollY*0.3+"px";
+});
 
 let currentProduct="";
 let currentIndex=0;
 let totalImages=0;
 
+/* OPEN */
 function openModal(product){
 
   if(product==="rick"){
-    currentProduct="Rick Owens Geobasket Black Milk";
+    currentProduct="Rick Owens Geobasket";
     totalImages=2;
     modalContent.innerHTML=createGallery([
       "IMG_0653.webp",
@@ -342,11 +294,12 @@ function openModal(product){
   currentIndex=0;
   setTimeout(updateGallery,50);
 
-  dmPreview.innerText="Message:\nI want to buy: "+currentProduct;
+  dmPreview.innerText="I want to buy: "+currentProduct;
 
-  document.getElementById("modal").classList.add("active");
+  modal.classList.add("active");
 }
 
+/* GALLERY */
 function createGallery(images){
   return `
     <div class="gallery">
@@ -362,17 +315,15 @@ function createGallery(images){
   `;
 }
 
+/* UPDATE */
 function updateGallery(){
+  const track=document.getElementById("track");
   const images=document.querySelectorAll("#track img");
 
-  document.getElementById("track").style.transform =
-    "translateX(-"+(currentIndex*100)+"%)";
+  track.style.transform="translateX(-"+(currentIndex*100)+"%)";
 
   images.forEach((img,i)=>{
-    img.classList.remove("active");
-    if(i===currentIndex){
-      img.classList.add("active");
-    }
+    img.classList.toggle("active",i===currentIndex);
   });
 
   for(let i=0;i<totalImages;i++){
@@ -381,6 +332,7 @@ function updateGallery(){
   document.getElementById("dot"+currentIndex).classList.add("active");
 }
 
+/* NAV */
 function next(){
   if(currentIndex<totalImages-1){
     currentIndex++;
@@ -395,21 +347,15 @@ function prev(){
   }
 }
 
+/* CLOSE */
 function closeModal(){
-  const modal=document.getElementById("modal");
   modal.classList.remove("active");
-
-  setTimeout(()=>{
-    modalContent.innerHTML="";
-    dmPreview.innerText="";
-    currentProduct="";
-  },300);
 }
 
+/* BUY */
 function buyNow(){
-  let msg="I want to buy: "+currentProduct;
-  navigator.clipboard.writeText(msg);
-  window.open("https://www.instagram.com/daggerdick_77/","_blank");
+  navigator.clipboard.writeText("I want to buy: "+currentProduct);
+  window.open("https://www.instagram.com/daggerdick_77/");
 }
 
 </script>
