@@ -26,7 +26,7 @@ body {
 /* HEADER */
 header {
   text-align:center;
-  padding:20px;
+  padding:25px;
   border-bottom:1px solid #222;
 }
 
@@ -39,8 +39,8 @@ h1 {
 .container {
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:40px 20px;
-  padding:30px 20px;
+  gap:50px 20px;
+  padding:40px 20px;
 }
 
 /* CARD */
@@ -58,7 +58,7 @@ h1 {
 
 .card img {
   width:100%;
-  height:220px;
+  height:240px;
   object-fit:cover;
   transition:transform 1s ease, opacity 0.6s ease;
 }
@@ -69,41 +69,48 @@ h1 {
 }
 
 /* TEXT */
-.name {
-  margin-top:10px;
-  font-size:13px;
-}
+.name { margin-top:12px; font-size:13px; }
+.price { font-size:12px; color:#777; }
+.stock { color:red; font-size:11px; }
 
-.price {
-  font-size:12px;
-  color:#777;
-}
-
-.stock {
-  color:red;
-  font-size:11px;
-}
-
-/* MODAL CINEMATIC */
+/* MODAL */
 #modal {
   position:fixed;
   bottom:-100%;
   left:0;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.95);
+  background:rgba(0,0,0,0.96);
   backdrop-filter:blur(10px);
-  transition:0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:0.6s cubic-bezier(0.22,1,0.36,1);
   z-index:2000;
+  padding-top:60px; /* SPACE FROM TOP */
 }
 
 #modal.active {
   bottom:0;
 }
 
-/* IMAGE ANIMATION */
+/* CLOSE */
+.close {
+  position:fixed;
+  top:15px;
+  right:20px;
+  font-size:22px;
+  cursor:pointer;
+}
+
+/* GALLERY (SWIPE) */
+.gallery {
+  display:flex;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+}
+
 .gallery img {
   width:100%;
+  flex:0 0 100%;
+  scroll-snap-align:center;
   transform:scale(1.08);
   opacity:0;
   transition:all 1s ease;
@@ -112,15 +119,6 @@ h1 {
 #modal.active .gallery img {
   transform:scale(1);
   opacity:1;
-}
-
-/* CLOSE */
-.close {
-  position:fixed;
-  top:20px;
-  right:20px;
-  font-size:20px;
-  cursor:pointer;
 }
 
 /* DM */
@@ -144,6 +142,29 @@ h1 {
   color:#000;
 }
 
+/* INSTAGRAM SECTION */
+.insta {
+  margin:60px 0;
+  text-align:center;
+  font-size:12px;
+  color:#888;
+}
+
+.insta a {
+  display:inline-block;
+  margin-top:10px;
+  padding:10px 20px;
+  border:1px solid #fff;
+  color:#fff;
+  text-decoration:none;
+  transition:0.3s;
+}
+
+.insta a:hover {
+  background:#fff;
+  color:#000;
+}
+
 </style>
 </head>
 
@@ -155,7 +176,6 @@ h1 {
 
 <section class="container">
 
-<!-- RICK -->
 <div class="card" onclick="openModal('rick')">
   <img src="IMG_0653.webp">
   <div class="name">Rick Owens<br>Geobasket Black Milk</div>
@@ -163,7 +183,6 @@ h1 {
   <div class="stock">Only 1 left</div>
 </div>
 
-<!-- BALENCIAGA -->
 <div class="card" onclick="openModal('balenciaga')">
   <img src="IMG_0663.jpeg">
   <div class="name">Balenciaga<br>Furry Mule</div>
@@ -172,9 +191,18 @@ h1 {
 
 </section>
 
+<!-- INSTAGRAM VIBE -->
+<div class="insta">
+  ARCHIVE ENERGY — FOLLOW FOR MORE  
+  <br>
+  <a href="https://www.instagram.com/daggerdick_77/" target="_blank">
+    Instagram ↗
+  </a>
+</div>
+
 <!-- MODAL -->
 <div id="modal">
-  <div class="close" onclick="closeModal()">✕</div>
+  <div class="close" onclick="closeModal()">❌</div>
 
   <div id="modalContent"></div>
 
@@ -185,17 +213,15 @@ h1 {
 
 <script>
 
-/* SMOOTH SCROLL */
-document.documentElement.style.scrollBehavior = "smooth";
+document.documentElement.style.scrollBehavior="smooth";
 
-let currentProduct = "";
+let currentProduct="";
 
-/* FADE IN */
-const cards = document.querySelectorAll('.card');
-
-window.onload = () => {
+/* FADE */
+const cards=document.querySelectorAll('.card');
+window.onload=()=>{
   cards.forEach((card,i)=>{
-    setTimeout(()=>card.classList.add('show'), i*150);
+    setTimeout(()=>card.classList.add('show'),i*150);
   });
 };
 
@@ -204,23 +230,25 @@ function openModal(product){
 
   if(product==="rick"){
     currentProduct="Rick Owens Geobasket Black Milk";
-    modalContent.innerHTML = `
+    modalContent.innerHTML=`
       <div class="gallery">
         <img src="IMG_0653.webp">
+        <img src="IMG_0537.jpeg">
       </div>
     `;
   }
 
   if(product==="balenciaga"){
     currentProduct="Balenciaga Furry Mule";
-    modalContent.innerHTML = `
+    modalContent.innerHTML=`
       <div class="gallery">
         <img src="IMG_0663.jpeg">
+        <img src="IMG_0506.jpeg">
       </div>
     `;
   }
 
-  dmPreview.innerText = "Message:\nI want to buy: " + currentProduct;
+  dmPreview.innerText="Message:\nI want to buy: "+currentProduct;
 
   document.getElementById("modal").classList.add("active");
 }
@@ -229,9 +257,9 @@ function closeModal(){
   document.getElementById("modal").classList.remove("active");
 }
 
-/* BUY (UNCHANGED DM SYSTEM) */
+/* DM (UNCHANGED) */
 function buyNow(){
-  let msg = "I want to buy: " + currentProduct;
+  let msg="I want to buy: "+currentProduct;
   navigator.clipboard.writeText(msg);
   window.open("https://www.instagram.com/daggerdick_77/","_blank");
 }
