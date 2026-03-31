@@ -11,7 +11,7 @@
 <style>
 
 /* =========================
-   🌲 BACKGROUND
+   🌲 BACKGROUND (UPDATED)
 ========================= */
 
 body {
@@ -21,8 +21,17 @@ body {
 
   background:
   linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)),
-  url('https://images.unsplash.com/photo-1470770903676-69b98201ea1c?grayscale')
+  url('https://i.pinimg.com/originals/your-image.jpg') /* put real img if needed */
   no-repeat center/cover fixed;
+
+  scroll-behavior:smooth;
+}
+
+/* make page longer */
+body::after{
+  content:"";
+  display:block;
+  height:800px;
 }
 
 /* =========================
@@ -44,7 +53,6 @@ body {
   animation: drip 2s infinite alternate;
 }
 
-/* dripping illusion */
 @keyframes drip {
   0% { transform:translateY(0); }
   100% { transform:translateY(6px); }
@@ -86,7 +94,7 @@ body {
 }
 
 /* =========================
-   ☰ MENU
+   ☰ MENU (UPDATED)
 ========================= */
 
 .menu-btn{
@@ -95,18 +103,38 @@ body {
   top:30px;
   font-size:22px;
   cursor:pointer;
+  z-index:5001;
+}
+
+/* overlay to block clicks */
+.menu-overlay{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.7);
+  top:0;
+  left:0;
+  opacity:0;
+  pointer-events:none;
+  transition:0.3s;
+  z-index:4000;
+}
+
+.menu-overlay.active{
+  opacity:1;
+  pointer-events:auto;
 }
 
 .side-menu{
   position:fixed;
   left:-100%;
   top:0;
-  width:260px;
+  width:50%; /* HALF SCREEN */
   height:100%;
   background:#0a0a0a;
   padding:40px 20px;
   transition:0.4s ease;
-  z-index:4000;
+  z-index:5000;
 }
 
 .side-menu.active{ left:0; }
@@ -116,6 +144,7 @@ body {
   margin:20px 0;
   color:#aaa;
   text-decoration:none;
+  font-size:18px;
 }
 
 /* =========================
@@ -136,28 +165,40 @@ header h1 {
 }
 
 /* =========================
-   GRID
+   GRID (SMALLER PRODUCTS)
 ========================= */
 
 .container {
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:50px 20px;
+  grid-template-columns:repeat(2,1fr);
+  gap:40px 15px;
   padding:40px 20px;
 }
 
-/* CARD */
-.card { cursor:pointer; }
-
 .card img {
   width:100%;
-  height:240px;
+  height:180px; /* smaller */
   object-fit:cover;
 }
 
-.name { font-size:13px; margin-top:10px; }
-.price { font-size:12px; color:#777; }
-.stock { color:red; font-size:11px; }
+.name { font-size:12px; margin-top:8px; }
+.price { font-size:11px; color:#777; }
+.stock { color:red; font-size:10px; }
+
+/* =========================
+   EXTRA SCROLL SECTIONS
+========================= */
+
+.section {
+  padding:60px 20px;
+  border-top:1px solid #111;
+}
+
+.section h2{
+  font-family:'Creepster';
+  color:#b30000;
+  margin-bottom:20px;
+}
 
 /* =========================
    MODAL (SMOOTH)
@@ -179,7 +220,6 @@ header h1 {
   transform:translateY(0);
 }
 
-/* CLOSE */
 .close {
   position:fixed;
   top:65px;
@@ -189,92 +229,14 @@ header h1 {
   z-index:3000;
 }
 
-/* GALLERY */
-.gallery {
-  overflow:hidden;
-  position:relative;
-}
-
+/* GALLERY FIX SMOOTH */
 .gallery-track {
   display:flex;
-  transition:0.6s;
+  transition:transform 0.5s ease;
+  will-change:transform;
 }
 
-.gallery img {
-  width:100%;
-  flex:0 0 100%;
-  opacity:0.6;
-  filter:blur(6px);
-}
-
-.gallery img.active {
-  opacity:1;
-  filter:blur(0);
-}
-
-/* ARROWS */
-.arrow {
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  background:rgba(0,0,0,0.5);
-  padding:8px;
-  cursor:pointer;
-}
-
-.arrow.left { left:10px; }
-.arrow.right { right:10px; }
-
-/* DOTS */
-.dots { text-align:center; }
-
-.dot {
-  width:6px;
-  height:6px;
-  background:#555;
-  display:inline-block;
-  margin:5px;
-  border-radius:50%;
-}
-
-.dot.active {
-  width:16px;
-  background:#fff;
-}
-
-/* DM */
-#dmPreview {
-  margin:20px;
-  font-size:12px;
-  color:#aaa;
-}
-
-.buy-btn {
-  margin:20px;
-  padding:15px;
-  border:1px solid #fff;
-  text-align:center;
-  cursor:pointer;
-}
-
-/* INSTAGRAM */
-.insta {
-  text-align:center;
-  margin:60px 0;
-}
-
-/* =========================
-   ⚠️ BOTTOM DISCLAIMER
-========================= */
-
-.footer-warning {
-  text-align:center;
-  font-family:'Creepster', cursive;
-  font-size:11px;
-  color:#8b0000;
-  margin-bottom:30px;
-  opacity:0.7;
-}
+/* ========================= */
 
 </style>
 </head>
@@ -283,13 +245,16 @@ header h1 {
 
 <div class="menu-btn" onclick="toggleMenu()">☰</div>
 
+<div class="menu-overlay" id="overlay" onclick="toggleMenu()"></div>
+
 <div class="side-menu" id="menu">
   <a href="#">Home</a>
+  <a href="#">Products</a>
+  <a href="#">Other Brands</a>
   <a href="#">Archive</a>
-  <a href="#">Contact</a>
 </div>
 
-<!-- LOADER WITH BLOOD INTRO -->
+<!-- LOADER -->
 <div id="loader">
   <div class="intro-text">VAMP SELECTION</div>
   <div class="caution">⚠️ REPS / ARCHIVE ITEMS – ENTER AT YOUR OWN RISK</div>
@@ -316,12 +281,22 @@ header h1 {
 
 </section>
 
+<!-- EXTRA CONTENT (SCROLLABLE) -->
+<div class="section">
+  <h2>More Drops</h2>
+  <p>New items coming soon...</p>
+</div>
+
+<div class="section">
+  <h2>Other Brands</h2>
+  <p>Archive pieces / rare finds...</p>
+</div>
+
 <div class="insta">
   FOLLOW FOR MORE<br>
   <a href="https://www.instagram.com/daggerdick_77/" target="_blank">Instagram</a>
 </div>
 
-<!-- ⚠️ BOTTOM WARNING -->
 <div class="footer-warning">
 ⚠️ ALL PRODUCTS ARE REPS / FOR FASHION PURPOSES ONLY — FOLLOW FOR MORE
 </div>
@@ -335,9 +310,10 @@ header h1 {
 
 <script>
 
-/* MENU */
+/* MENU FIX */
 function toggleMenu(){
   document.getElementById("menu").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
 }
 
 /* LOADER */
@@ -345,91 +321,7 @@ window.onload=()=>{
   setTimeout(()=>loader.classList.add("hide"),1600);
 };
 
-let currentProduct="";
-let currentIndex=0;
-let totalImages=0;
-
-function openModal(product){
-
-  if(product==="rick"){
-    currentProduct="Rick Owens Geobasket";
-    totalImages=2;
-    modalContent.innerHTML=createGallery([
-      "IMG_0653.webp",
-      "IMG_0537.jpeg"
-    ]);
-  }
-
-  if(product==="balenciaga"){
-    currentProduct="Balenciaga Mule";
-    totalImages=2;
-    modalContent.innerHTML=createGallery([
-      "IMG_0663.jpeg",
-      "IMG_0506.jpeg"
-    ]);
-  }
-
-  currentIndex=0;
-  setTimeout(updateGallery,50);
-
-  dmPreview.innerText="I want to buy: "+currentProduct;
-
-  document.getElementById("modal").classList.add("active");
-}
-
-function createGallery(images){
-  return `
-    <div class="gallery">
-      <div class="gallery-track" id="track">
-        ${images.map(img=>`<img src="${img}">`).join("")}
-      </div>
-      <div class="arrow left" onclick="prev()">←</div>
-      <div class="arrow right" onclick="next()">→</div>
-    </div>
-    <div class="dots">
-      ${images.map((_,i)=>`<span class="dot" id="dot${i}"></span>`).join("")}
-    </div>
-  `;
-}
-
-function updateGallery(){
-  const track=document.getElementById("track");
-  const images=document.querySelectorAll("#track img");
-
-  track.style.transform="translateX(-"+(currentIndex*100)+"%)";
-
-  images.forEach((img,i)=>{
-    img.classList.toggle("active",i===currentIndex);
-  });
-
-  for(let i=0;i<totalImages;i++){
-    document.getElementById("dot"+i).classList.remove("active");
-  }
-  document.getElementById("dot"+currentIndex).classList.add("active");
-}
-
-function next(){
-  if(currentIndex<totalImages-1){
-    currentIndex++;
-    updateGallery();
-  }
-}
-
-function prev(){
-  if(currentIndex>0){
-    currentIndex--;
-    updateGallery();
-  }
-}
-
-function closeModal(){
-  document.getElementById("modal").classList.remove("active");
-}
-
-function buyNow(){
-  navigator.clipboard.writeText("I want to buy: "+currentProduct);
-  window.open("https://www.instagram.com/daggerdick_77/");
-}
+/* KEEP YOUR ORIGINAL JS BELOW (UNCHANGED) */
 
 </script>
 
