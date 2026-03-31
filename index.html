@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -9,6 +9,7 @@
 
 <style>
 
+/* BASE */
 body {
   margin:0;
   background:#050505;
@@ -21,6 +22,11 @@ header {
   text-align:center;
   padding:25px;
   border-bottom:1px solid #222;
+}
+
+h1 {
+  font-size:16px;
+  letter-spacing:4px;
 }
 
 /* GRID */
@@ -55,7 +61,7 @@ header {
   height:100%;
   background:rgba(0,0,0,0.96);
   backdrop-filter:blur(10px);
-  transition:0.5s ease;
+  transition:0.6s cubic-bezier(0.22,1,0.36,1);
   z-index:2000;
   padding-top:60px;
   pointer-events:none;
@@ -66,16 +72,18 @@ header {
   pointer-events:auto;
 }
 
-/* CLOSE */
+/* CLOSE (MOVED DOWN) */
 .close {
   position:fixed;
-  top:20px;
+  top:40px;
   right:20px;
   font-size:24px;
   z-index:3000;
   background:rgba(0,0,0,0.6);
   padding:8px 12px;
   border-radius:8px;
+  backdrop-filter:blur(6px);
+  cursor:pointer;
 }
 
 /* GALLERY */
@@ -86,12 +94,22 @@ header {
 
 .gallery-track {
   display:flex;
-  transition:transform 0.4s ease;
+  transition:transform 0.6s cubic-bezier(0.22,1,0.36,1);
 }
 
 .gallery img {
   width:100%;
   flex:0 0 100%;
+  filter:blur(6px);
+  opacity:0.6;
+  transform:scale(1.05);
+  transition:all 0.8s ease;
+}
+
+.gallery img.active {
+  filter:blur(0);
+  opacity:1;
+  transform:scale(1);
 }
 
 /* ARROWS */
@@ -119,12 +137,15 @@ header {
   display:inline-block;
   width:6px;
   height:6px;
-  margin:4px;
+  margin:5px;
   background:#555;
   border-radius:50%;
+  transition:all 0.4s ease;
 }
 
 .dot.active {
+  width:16px;
+  border-radius:10px;
   background:#fff;
 }
 
@@ -163,6 +184,11 @@ header {
   border:1px solid #fff;
   color:#fff;
   text-decoration:none;
+}
+
+.insta a:hover {
+  background:#fff;
+  color:#000;
 }
 
 </style>
@@ -238,9 +264,10 @@ function openModal(product){
   }
 
   currentIndex=0;
-  updateGallery();
+  setTimeout(updateGallery,50);
 
   dmPreview.innerText="Message:\nI want to buy: "+currentProduct;
+
   document.getElementById("modal").classList.add("active");
 }
 
@@ -256,7 +283,7 @@ function createGallery(images){
       <div class="arrow right" onclick="next()">→</div>
     </div>
 
-    <div class="dots" id="dots">
+    <div class="dots">
       ${images.map((_,i)=>`<span class="dot" id="dot${i}"></span>`).join("")}
     </div>
   `;
@@ -264,8 +291,17 @@ function createGallery(images){
 
 /* UPDATE */
 function updateGallery(){
+  const images=document.querySelectorAll("#track img");
+
   document.getElementById("track").style.transform =
     "translateX(-"+(currentIndex*100)+"%)";
+
+  images.forEach((img,i)=>{
+    img.classList.remove("active");
+    if(i===currentIndex){
+      img.classList.add("active");
+    }
+  });
 
   for(let i=0;i<totalImages;i++){
     document.getElementById("dot"+i).classList.remove("active");
@@ -275,14 +311,14 @@ function updateGallery(){
 
 /* ARROWS */
 function next(){
-  if(currentIndex < totalImages-1){
+  if(currentIndex<totalImages-1){
     currentIndex++;
     updateGallery();
   }
 }
 
 function prev(){
-  if(currentIndex > 0){
+  if(currentIndex>0){
     currentIndex--;
     updateGallery();
   }
@@ -290,7 +326,14 @@ function prev(){
 
 /* CLOSE */
 function closeModal(){
-  document.getElementById("modal").classList.remove("active");
+  const modal=document.getElementById("modal");
+  modal.classList.remove("active");
+
+  setTimeout(()=>{
+    modalContent.innerHTML="";
+    dmPreview.innerText="";
+    currentProduct="";
+  },300);
 }
 
 /* DM */
