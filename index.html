@@ -9,6 +9,33 @@
 <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Unbounded:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
+   /* Extend page length but keep product in same place */
+body {
+  min-height: 200vh; /* Makes the page roughly twice the viewport height */
+  position: relative;
+}
+
+.container {
+  position: relative; /* keeps product cards in same visual place */
+  z-index: 1;
+}
+
+.insta,
+.footer-warning {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 1;
+}
+
+.insta {
+  bottom: 80px; /* Instagram link floats near bottom */
+}
+
+.footer-warning {
+  bottom: 30px; /* Caution text stays just above the bottom */
+}
 
 /* =========================
    🌲 BACKGROUND
