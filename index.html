@@ -21,10 +21,6 @@ header {
   border-bottom:1px solid #222;
 }
 
-h1 {
-  letter-spacing:4px;
-}
-
 .container {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -71,10 +67,6 @@ h1 {
   overflow-y:auto;
 }
 
-.modal-content {
-  padding:20px;
-}
-
 .modal img {
   width:100%;
   margin-bottom:20px;
@@ -104,7 +96,12 @@ h1 {
 
 <header>
 <h1>VAMP SELECTION</h1>
-<p>Dark Archive Fashion</p>
+<p>
+DM to purchase → 
+<a href="https://www.instagram.com/daggerdick_77/" target="_blank" style="color:#aaa;">
+@daggerdick_77
+</a>
+</p>
 </header>
 
 <section class="container">
@@ -130,30 +127,34 @@ h1 {
 <!-- MODAL -->
 <div id="modal" class="modal">
   <span class="close" onclick="closeModal()">✕</span>
-  <div class="modal-content" id="modalContent"></div>
+  <div id="modalContent"></div>
 
-<a class="buy-btn" href="https://www.instagram.com/direct/t/username/?text=I%20want%20to%20buy%20this%20item" target="_blank">
-  DM TO BUY ON INSTAGRAM
-</a>
+  <a id="buyBtn" class="buy-btn" target="_blank">
+    DM TO BUY ON INSTAGRAM
+  </a>
+</div>
 
 <script>
 function openModal(product) {
   const modal = document.getElementById("modal");
   const content = document.getElementById("modalContent");
+  const buyBtn = document.getElementById("buyBtn");
 
   if(product === 'rick') {
     content.innerHTML = `
       <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">
       <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk-Product.jpg">
-      <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk-Detail.jpg">
     `;
+
+    buyBtn.href = "https://www.instagram.com/direct/t/?text=I%20want%20to%20buy%20RICK%20OWENS%20GEOBASKET%20BLACK%20MILK";
   }
 
   if(product === 'balenciaga') {
     content.innerHTML = `
       <img src="https://balenciaga.dam.kering.com/m/2d3e9f1f6e0f7a0f/Medium-677390W2F701000_F.jpg">
-      <img src="https://balenciaga.dam.kering.com/m/abc123/Medium-Detail.jpg">
     `;
+
+    buyBtn.href = "https://www.instagram.com/direct/t/?text=I%20want%20to%20buy%20BALENCIAGA%20FURRY%20MULE";
   }
 
   modal.style.display = "block";
