@@ -8,21 +8,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500&display=swap" rel="stylesheet">
 
 <style>
+
+/* BASE */
 body {
   margin:0;
   background:#050505;
   color:#eee;
   font-family:'Unbounded', sans-serif;
+  animation:fadePage 1s ease;
+}
+
+@keyframes fadePage {
+  from {opacity:0;}
+  to {opacity:1;}
 }
 
 /* HEADER */
 header {
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  text-align:center;
   padding:20px;
   border-bottom:1px solid #222;
-  position:relative;
 }
 
 h1 {
@@ -41,7 +46,7 @@ h1 {
 /* CARD */
 .card {
   opacity:0;
-  transform:translateY(30px);
+  transform:translateY(40px);
   transition:all 0.8s ease;
   cursor:pointer;
 }
@@ -55,23 +60,21 @@ h1 {
   width:100%;
   height:220px;
   object-fit:cover;
-  transition:0.6s ease;
+  transition:transform 1s ease, opacity 0.6s ease;
 }
 
 .card:hover img {
-  transform:scale(1.05);
-  opacity:0.85;
+  transform:scale(1.08);
+  opacity:0.9;
 }
 
 /* TEXT */
 .name {
   margin-top:10px;
   font-size:13px;
-  line-height:1.4;
 }
 
 .price {
-  margin-top:5px;
   font-size:12px;
   color:#777;
 }
@@ -81,15 +84,16 @@ h1 {
   font-size:11px;
 }
 
-/* MODAL */
+/* MODAL CINEMATIC */
 #modal {
   position:fixed;
   bottom:-100%;
   left:0;
   width:100%;
   height:100%;
-  background:#000;
-  transition:0.5s ease;
+  background:rgba(0,0,0,0.95);
+  backdrop-filter:blur(10px);
+  transition:0.6s cubic-bezier(0.22, 1, 0.36, 1);
   z-index:2000;
 }
 
@@ -97,8 +101,17 @@ h1 {
   bottom:0;
 }
 
+/* IMAGE ANIMATION */
 .gallery img {
   width:100%;
+  transform:scale(1.08);
+  opacity:0;
+  transition:all 1s ease;
+}
+
+#modal.active .gallery img {
+  transform:scale(1);
+  opacity:1;
 }
 
 /* CLOSE */
@@ -130,6 +143,7 @@ h1 {
   background:#fff;
   color:#000;
 }
+
 </style>
 </head>
 
@@ -170,20 +184,15 @@ h1 {
 </div>
 
 <script>
+
+/* SMOOTH SCROLL */
+document.documentElement.style.scrollBehavior = "smooth";
+
 let currentProduct = "";
 
-/* FADE-IN ON SCROLL */
+/* FADE IN */
 const cards = document.querySelectorAll('.card');
-window.addEventListener('scroll', () => {
-  cards.forEach(card => {
-    const rect = card.getBoundingClientRect();
-    if(rect.top < window.innerHeight - 50){
-      card.classList.add('show');
-    }
-  });
-});
 
-/* LOAD ANIMATION */
 window.onload = () => {
   cards.forEach((card,i)=>{
     setTimeout(()=>card.classList.add('show'), i*150);
@@ -192,21 +201,26 @@ window.onload = () => {
 
 /* MODAL */
 function openModal(product){
+
   if(product==="rick"){
     currentProduct="Rick Owens Geobasket Black Milk";
-    modalContent.innerHTML=`<div class="gallery">
-      <img src="IMG_0653.webp">
-    </div>`;
+    modalContent.innerHTML = `
+      <div class="gallery">
+        <img src="IMG_0653.webp">
+      </div>
+    `;
   }
 
   if(product==="balenciaga"){
     currentProduct="Balenciaga Furry Mule";
-    modalContent.innerHTML=`<div class="gallery">
-      <img src="IMG_0663.jpeg">
-    </div>`;
+    modalContent.innerHTML = `
+      <div class="gallery">
+        <img src="IMG_0663.jpeg">
+      </div>
+    `;
   }
 
-  dmPreview.innerText="Message:\nI want to buy: "+currentProduct;
+  dmPreview.innerText = "Message:\nI want to buy: " + currentProduct;
 
   document.getElementById("modal").classList.add("active");
 }
@@ -215,12 +229,13 @@ function closeModal(){
   document.getElementById("modal").classList.remove("active");
 }
 
-/* BUY */
+/* BUY (UNCHANGED DM SYSTEM) */
 function buyNow(){
-  let msg="I want to buy: "+currentProduct;
+  let msg = "I want to buy: " + currentProduct;
   navigator.clipboard.writeText(msg);
   window.open("https://www.instagram.com/daggerdick_77/","_blank");
 }
+
 </script>
 
 </body>
