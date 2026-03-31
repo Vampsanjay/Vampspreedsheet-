@@ -25,111 +25,60 @@ header {
   position:relative;
 }
 
-h1 {
-  letter-spacing:5px;
-  font-size:18px;
-}
-
 .menu-btn {
   position:absolute;
   left:20px;
-  font-size:22px;
+  font-size:20px;
   cursor:pointer;
 }
 
-/* SIDEBAR */
-#sidebar {
-  position:fixed;
-  top:0;
-  left:-260px;
-  width:260px;
-  height:100%;
-  background:#000;
-  border-right:1px solid #222;
-  transition:0.3s;
-  padding:30px 20px;
-  z-index:1000;
+h1 {
+  font-size:16px;
+  letter-spacing:4px;
 }
 
-#sidebar a {
-  display:block;
-  margin:20px 0;
-  color:#777;
-  text-decoration:none;
-}
-
-#sidebar a:hover {
-  color:#fff;
-}
-
-/* OVERLAY */
-#overlay {
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.6);
-  display:none;
-}
-
-/* SECTION TITLE */
-.section-title {
-  padding-left:30px;
-  color:#666;
-  font-size:12px;
-  margin-top:20px;
-}
-
-/* GRID */
+/* GRID LIKE ARCHIVED */
 .container {
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:30px;
-  padding:30px;
+  grid-template-columns:1fr 1fr;
+  gap:40px 20px;
+  padding:30px 20px;
 }
 
-/* CARD */
+/* PRODUCT */
 .card {
-  background:#0d0d0d;
-  border:1px solid #222;
   cursor:pointer;
   transition:0.3s;
-  opacity:0;
-  transform:translateY(30px);
-  animation:fadeUp 0.6s forwards;
-}
-
-@keyframes fadeUp {
-  to {opacity:1; transform:translateY(0);}
-}
-
-.card:hover {
-  transform:scale(1.03);
-  box-shadow:0 0 25px rgba(255,255,255,0.08);
 }
 
 .card img {
   width:100%;
-  height:300px;
+  height:220px;
   object-fit:cover;
-  filter:grayscale(100%);
+  background:#111;
+  transition:0.4s;
 }
 
 .card:hover img {
-  filter:grayscale(0%);
+  opacity:0.85;
 }
 
-.card-content {
-  padding:15px;
+/* TEXT */
+.name {
+  margin-top:10px;
+  font-size:13px;
+  line-height:1.4;
 }
 
 .price {
-  color:#888;
+  margin-top:5px;
   font-size:12px;
+  color:#777;
 }
 
-.viewers {
+.stock {
+  color:red;
   font-size:11px;
-  color:#aaa;
 }
 
 /* MODAL */
@@ -139,21 +88,13 @@ h1 {
   width:100%;
   height:100%;
   background:#000;
-  overflow:auto;
   z-index:2000;
-}
-
-.gallery {
-  display:flex;
-  overflow-x:auto;
 }
 
 .gallery img {
   width:100%;
-  flex-shrink:0;
 }
 
-/* CLOSE */
 .close {
   position:fixed;
   top:20px;
@@ -162,16 +103,13 @@ h1 {
   cursor:pointer;
 }
 
-/* DM BOX */
+/* DM */
 #dmPreview {
   margin:20px;
-  padding:10px;
-  border:1px solid #333;
   font-size:12px;
   color:#aaa;
 }
 
-/* BUY */
 .buy-btn {
   margin:20px;
   padding:15px;
@@ -184,43 +122,30 @@ h1 {
 
 <body>
 
-<!-- MENU -->
-<div id="sidebar">
-  <a onclick="filter('all'); closeMenu()">ALL ITEMS</a>
-  <a onclick="filter('shoes'); closeMenu()">SHOES</a>
-  <a onclick="filter('new'); closeMenu()">NEW DROPS</a>
-</div>
-
-<div id="overlay" onclick="closeMenu()"></div>
-
 <header>
-  <div class="menu-btn" onclick="openMenu()">☰</div>
+  <div class="menu-btn">☰</div>
   <h1>VAMP SELECTION</h1>
 </header>
-
-<h2 class="section-title">NEW</h2>
 
 <section class="container">
 
 <!-- RICK -->
-<div class="card" data-type="shoes new" onclick="openModal('rick')">
+<div class="card" onclick="openModal('rick')">
   <img src="IMG_0653.webp">
-  <div class="card-content">
-    RICK OWENS GEOBASKET
-    <div class="price">¥120,000</div>
-    <div class="viewers">18 viewing</div>
-    <div style="color:red;font-size:11px;">Only 1 left</div>
+  <div class="name">
+    Rick Owens<br>Geobasket Black Milk
   </div>
+  <div class="price">¥120,000</div>
+  <div class="stock">Only 1 left</div>
 </div>
 
 <!-- BALENCIAGA -->
-<div class="card" data-type="shoes new" onclick="openModal('balenciaga')">
+<div class="card" onclick="openModal('balenciaga')">
   <img src="IMG_0663.jpeg">
-  <div class="card-content">
-    BALENCIAGA FURRY MULE
-    <div class="price">¥95,000</div>
-    <div class="viewers">9 viewing</div>
+  <div class="name">
+    Balenciaga<br>Furry Mule
   </div>
+  <div class="price">¥95,000</div>
 </div>
 
 </section>
@@ -228,47 +153,32 @@ h1 {
 <!-- MODAL -->
 <div id="modal">
   <div class="close" onclick="closeModal()">✕</div>
+
   <div id="modalContent"></div>
+
   <div id="dmPreview"></div>
-  <div class="buy-btn" onclick="buyNow()">SEND DM</div>
+
+  <div class="buy-btn" onclick="buyNow()">DM TO BUY</div>
 </div>
 
 <script>
 let currentProduct = "";
 
-/* MENU */
-function openMenu(){
-  document.getElementById("sidebar").style.left = "0";
-  document.getElementById("overlay").style.display = "block";
-}
-
-function closeMenu(){
-  document.getElementById("sidebar").style.left = "-260px";
-  document.getElementById("overlay").style.display = "none";
-}
-
-/* FILTER */
-function filter(type){
-  document.querySelectorAll(".card").forEach(c=>{
-    c.style.display = (type==="all" || c.dataset.type.includes(type)) ? "block" : "none";
-  });
-}
-
 /* MODAL */
 function openModal(product){
 
   if(product==="rick"){
-    currentProduct="Rick Owens Geobasket";
-    document.getElementById("modalContent").innerHTML=`
-      <div class="gallery">
+    currentProduct="Rick Owens Geobasket Black Milk";
+    document.getElementById("modalContent").innerHTML=
+      `<div class="gallery">
         <img src="IMG_0653.webp">
       </div>`;
   }
 
   if(product==="balenciaga"){
     currentProduct="Balenciaga Furry Mule";
-    document.getElementById("modalContent").innerHTML=`
-      <div class="gallery">
+    document.getElementById("modalContent").innerHTML=
+      `<div class="gallery">
         <img src="IMG_0663.jpeg">
       </div>`;
   }
@@ -276,16 +186,16 @@ function openModal(product){
   document.getElementById("dmPreview").innerText =
     "Message:\nI want to buy: " + currentProduct;
 
-  document.getElementById("modal").style.display = "block";
+  document.getElementById("modal").style.display="block";
 }
 
 function closeModal(){
-  document.getElementById("modal").style.display = "none";
+  document.getElementById("modal").style.display="none";
 }
 
 /* BUY */
 function buyNow(){
-  let msg = "I want to buy: " + currentProduct;
+  let msg="I want to buy: "+currentProduct;
   navigator.clipboard.writeText(msg);
   window.open("https://www.instagram.com/daggerdick_77/","_blank");
 }
