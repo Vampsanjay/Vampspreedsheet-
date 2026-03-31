@@ -26,7 +26,7 @@ body {
 }
 
 /* =========================
-   🩸 MASSIVE BLOOD INTRO
+   🩸 INTRO
 ========================= */
 
 .intro-text {
@@ -50,7 +50,7 @@ body {
 }
 
 /* =========================
-   ⚠️ CAUTION TEXT
+   ⚠️ CAUTION
 ========================= */
 
 .caution {
@@ -125,7 +125,6 @@ header {
   text-align:center;
   padding:25px;
   border-bottom:1px solid #222;
-  position:relative;
 }
 
 header h1 {
@@ -143,8 +142,6 @@ header h1 {
   grid-template-columns:1fr 1fr;
   gap:50px 20px;
   padding:40px 20px;
-  position:relative;
-  z-index:1;
 }
 
 /* CARD */
@@ -189,7 +186,10 @@ header h1 {
   z-index:3000;
 }
 
-/* GALLERY */
+/* =========================
+   GALLERY
+========================= */
+
 .gallery {
   overflow:hidden;
   position:relative;
@@ -242,23 +242,8 @@ header h1 {
   background:#fff;
 }
 
-/* DM */
-#dmPreview {
-  margin:20px;
-  font-size:12px;
-  color:#aaa;
-}
-
-.buy-btn {
-  margin:20px;
-  padding:15px;
-  border:1px solid #fff;
-  text-align:center;
-  cursor:pointer;
-}
-
 /* =========================
-   INSTAGRAM + WARNING (SCROLL FOLLOW)
+   INSTAGRAM + WARNING
 ========================= */
 
 .insta,
@@ -266,9 +251,7 @@ header h1 {
   position: relative;
   width: 100%;
   text-align: center;
-  z-index: 1;
-  transition: transform 0.2s linear;
-  will-change: transform;
+  transition: transform 0.15s linear;
 }
 
 .insta {
@@ -350,17 +333,12 @@ window.onload=()=>{
   setTimeout(()=>loader.classList.add("hide"),1600);
 };
 
-/* SCROLL FOLLOW EFFECT */
+/* PERFECT SCROLL FOLLOW */
 window.addEventListener("scroll", () => {
   const scrollY = window.scrollY;
 
-  const insta = document.querySelector(".insta");
-  const warning = document.querySelector(".footer-warning");
-
-  if (insta && warning) {
-    insta.style.transform = `translateY(${scrollY * 0.4}px)`;
-    warning.style.transform = `translateY(${scrollY * 0.45}px)`;
-  }
+  document.querySelector(".insta").style.transform = `translateY(${scrollY}px)`;
+  document.querySelector(".footer-warning").style.transform = `translateY(${scrollY}px)`;
 });
 
 let currentProduct="";
