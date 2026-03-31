@@ -3,204 +3,300 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Vamp Selection</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
-/* 🌲 BACKGROUND */
+/* =========================
+   🌲 GLOBAL / BACKGROUND
+========================= */
+
 body {
   margin:0;
+  padding:0;
   font-family:'Unbounded', sans-serif;
-  color:#eee;
-  background:url('https://images.unsplash.com/photo-1501785888041-af3ef285b470') no-repeat center/cover fixed;
+  color:#eaeaea;
+
+  background:
+  linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)),
+  url('https://images.unsplash.com/photo-1470770903676-69b98201ea1c?grayscale')
+  no-repeat center center fixed;
+
+  background-size:cover;
 }
 
-/* DARK OVERLAY */
-body::before {
-  content:'';
+/* subtle grain */
+body::after{
+  content:"";
   position:fixed;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.75);
-  top:0;
-  left:0;
-  z-index:-1;
-}
-
-/* 🖱️ CURSOR */
-.cursor {
-  position:fixed;
-  width:14px;
-  height:14px;
-  border-radius:50%;
-  background:#fff;
+  background:url('https://grainy-gradients.vercel.app/noise.svg');
+  opacity:0.08;
   pointer-events:none;
-  z-index:9999;
-  transform:translate(-50%,-50%);
-  box-shadow:0 0 12px rgba(255,255,255,0.6);
 }
 
-/* 🩸 LOADER */
-#loader {
+/* =========================
+   🩸 LOADER
+========================= */
+
+#loader{
   position:fixed;
   width:100%;
   height:100%;
   background:#000;
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
   z-index:9999;
+  flex-direction:column;
 }
 
-.blood {
+.blood{
   color:#8b0000;
-  font-size:22px;
-  letter-spacing:6px;
-  animation:pulse 1.5s infinite;
+  font-size:24px;
+  letter-spacing:8px;
+  animation:pulse 1.6s infinite;
 }
 
-@keyframes pulse {
-  0%,100%{opacity:0.5;}
+@keyframes pulse{
+  0%,100%{opacity:0.4;}
   50%{opacity:1;}
 }
 
-#loader.hide {
+#loader.hide{
   opacity:0;
-  transition:1s;
+  transition:1.2s ease;
   pointer-events:none;
 }
 
-/* HEADER */
-header {
+/* =========================
+   🧠 HEADER
+========================= */
+
+header{
   text-align:center;
-  padding:25px;
-  border-bottom:1px solid #222;
+  padding:30px 20px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  backdrop-filter:blur(4px);
 }
 
-/* GRID */
-.container {
+header h1{
+  font-size:18px;
+  letter-spacing:6px;
+  font-weight:500;
+}
+
+/* =========================
+   🧱 GRID
+========================= */
+
+.container{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:50px 20px;
-  padding:40px 20px;
+  gap:60px 25px;
+  padding:50px 20px;
 }
 
-/* CARD */
-.card { cursor:pointer; }
+/* =========================
+   🪦 PRODUCT CARD
+========================= */
 
-.card img {
+.card{
+  cursor:pointer;
+  transition:0.4s ease;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+}
+
+.card img{
   width:100%;
-  height:240px;
+  height:250px;
   object-fit:cover;
+  filter:contrast(1.05);
 }
 
-.name { font-size:13px; margin-top:10px; }
-.price { font-size:12px; color:#777; }
-.stock { color:red; font-size:11px; }
+.name{
+  margin-top:14px;
+  font-size:13px;
+  letter-spacing:1px;
+}
 
-/* MODAL */
-#modal {
+.price{
+  font-size:12px;
+  color:#777;
+}
+
+.stock{
+  font-size:11px;
+  color:#b30000;
+}
+
+/* =========================
+   🩸 MODAL
+========================= */
+
+#modal{
   position:fixed;
   bottom:-100%;
+  left:0;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.96);
-  transition:0.6s;
+  background:rgba(0,0,0,0.97);
+  backdrop-filter:blur(12px);
+  transition:0.6s cubic-bezier(0.22,1,0.36,1);
   z-index:2000;
-  padding-top:60px;
+  padding-top:70px;
   pointer-events:none;
 }
 
-#modal.active {
+#modal.active{
   bottom:0;
   pointer-events:auto;
 }
 
-/* ❌ CLOSE */
-.close {
+/* =========================
+   ❌ CLOSE BUTTON
+========================= */
+
+.close{
   position:fixed;
-  top:60px;
+  top:70px;
   right:20px;
   font-size:24px;
+  padding:10px 14px;
   background:rgba(0,0,0,0.6);
-  padding:8px 12px;
-  border-radius:8px;
+  border-radius:10px;
+  backdrop-filter:blur(6px);
   cursor:pointer;
   z-index:3000;
 }
 
-/* GALLERY */
-.gallery { overflow:hidden; position:relative; }
+/* =========================
+   🖼️ GALLERY
+========================= */
 
-.gallery-track {
-  display:flex;
-  transition:0.6s;
+.gallery{
+  position:relative;
+  overflow:hidden;
 }
 
-.gallery img {
+.gallery-track{
+  display:flex;
+  transition:transform 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+
+.gallery img{
   width:100%;
   flex:0 0 100%;
   opacity:0.6;
   filter:blur(6px);
-  transition:0.6s;
+  transform:scale(1.06);
+  transition:all 0.8s ease;
 }
 
-.gallery img.active {
+.gallery img.active{
   opacity:1;
   filter:blur(0);
+  transform:scale(1);
 }
 
-/* ARROWS */
-.arrow {
+/* =========================
+   ⬅️➡️ ARROWS
+========================= */
+
+.arrow{
   position:absolute;
   top:50%;
   transform:translateY(-50%);
+  font-size:20px;
   background:rgba(0,0,0,0.5);
-  padding:8px;
+  padding:10px 14px;
   cursor:pointer;
+  z-index:10;
 }
 
-.arrow.left { left:10px; }
-.arrow.right { right:10px; }
+.arrow.left{ left:10px; }
+.arrow.right{ right:10px; }
 
-/* DOTS */
-.dots { text-align:center; }
+/* =========================
+   ⚪ DOTS
+========================= */
 
-.dot {
+.dots{
+  text-align:center;
+  margin-top:12px;
+}
+
+.dot{
+  display:inline-block;
   width:6px;
   height:6px;
-  background:#555;
-  display:inline-block;
-  margin:5px;
+  margin:6px;
+  background:#444;
   border-radius:50%;
+  transition:all 0.4s;
 }
 
-.dot.active {
-  width:16px;
+.dot.active{
+  width:18px;
   background:#fff;
+  border-radius:10px;
 }
 
-/* DM */
-#dmPreview {
-  margin:20px;
+/* =========================
+   📩 DM SECTION
+========================= */
+
+#dmPreview{
+  margin:25px;
   font-size:12px;
   color:#aaa;
+  line-height:1.6;
 }
 
-.buy-btn {
+.buy-btn{
   margin:20px;
-  padding:15px;
+  padding:16px;
   border:1px solid #fff;
   text-align:center;
   cursor:pointer;
+  transition:0.3s;
 }
 
-/* INSTAGRAM */
-.insta {
+.buy-btn:hover{
+  background:#fff;
+  color:#000;
+}
+
+/* =========================
+   📱 INSTAGRAM
+========================= */
+
+.insta{
+  margin:80px 0;
   text-align:center;
-  margin:60px 0;
+  font-size:12px;
+  color:#777;
+}
+
+.insta a{
+  display:inline-block;
+  margin-top:12px;
+  padding:12px 24px;
+  border:1px solid #fff;
+  text-decoration:none;
+  color:#fff;
+}
+
+.insta a:hover{
+  background:#fff;
+  color:#000;
 }
 
 </style>
@@ -208,10 +304,9 @@ header {
 
 <body>
 
-<div class="cursor" id="cursor"></div>
-
+<!-- LOADER -->
 <div id="loader">
-  <h1 class="blood">VAMP SELECTION</h1>
+  <div class="blood">VAMP SELECTION</div>
 </div>
 
 <header>
@@ -222,7 +317,7 @@ header {
 
 <div class="card" onclick="openModal('rick')">
   <img src="IMG_0653.webp">
-  <div class="name">Rick Owens<br>Geobasket</div>
+  <div class="name">Rick Owens<br>Geobasket Black Milk</div>
   <div class="price">¥120,000</div>
   <div class="stock">Only 1 left</div>
 </div>
@@ -236,10 +331,13 @@ header {
 </section>
 
 <div class="insta">
-  FOLLOW FOR MORE<br>
-  <a href="https://www.instagram.com/daggerdick_77/" target="_blank">Instagram</a>
+  ARCHIVE ENERGY — FOLLOW FOR MORE<br>
+  <a href="https://www.instagram.com/daggerdick_77/" target="_blank">
+    Instagram ↗
+  </a>
 </div>
 
+<!-- MODAL -->
 <div id="modal">
   <div class="close" onclick="closeModal()">❌</div>
   <div id="modalContent"></div>
@@ -250,21 +348,11 @@ header {
 <script>
 
 /* LOADER */
-window.onload=()=>{
-  setTimeout(()=>loader.classList.add("hide"),1200);
+window.onload = () => {
+  setTimeout(()=>{
+    document.getElementById("loader").classList.add("hide");
+  },1200);
 };
-
-/* CURSOR */
-const cursor=document.getElementById("cursor");
-document.addEventListener("mousemove",(e)=>{
-  cursor.style.left=e.clientX+"px";
-  cursor.style.top=e.clientY+"px";
-});
-
-/* PARALLAX */
-window.addEventListener("scroll",()=>{
-  document.body.style.backgroundPositionY=window.scrollY*0.3+"px";
-});
 
 let currentProduct="";
 let currentIndex=0;
@@ -274,7 +362,7 @@ let totalImages=0;
 function openModal(product){
 
   if(product==="rick"){
-    currentProduct="Rick Owens Geobasket";
+    currentProduct="Rick Owens Geobasket Black Milk";
     totalImages=2;
     modalContent.innerHTML=createGallery([
       "IMG_0653.webp",
@@ -294,9 +382,9 @@ function openModal(product){
   currentIndex=0;
   setTimeout(updateGallery,50);
 
-  dmPreview.innerText="I want to buy: "+currentProduct;
+  dmPreview.innerText="Message:\nI want to buy: "+currentProduct;
 
-  modal.classList.add("active");
+  document.getElementById("modal").classList.add("active");
 }
 
 /* GALLERY */
@@ -306,9 +394,11 @@ function createGallery(images){
       <div class="gallery-track" id="track">
         ${images.map(img=>`<img src="${img}">`).join("")}
       </div>
+
       <div class="arrow left" onclick="prev()">←</div>
       <div class="arrow right" onclick="next()">→</div>
     </div>
+
     <div class="dots">
       ${images.map((_,i)=>`<span class="dot" id="dot${i}"></span>`).join("")}
     </div>
@@ -349,12 +439,19 @@ function prev(){
 
 /* CLOSE */
 function closeModal(){
+  const modal=document.getElementById("modal");
   modal.classList.remove("active");
+
+  setTimeout(()=>{
+    modalContent.innerHTML="";
+    dmPreview.innerText="";
+  },300);
 }
 
 /* BUY */
 function buyNow(){
-  navigator.clipboard.writeText("I want to buy: "+currentProduct);
+  const text="I want to buy: "+currentProduct;
+  navigator.clipboard.writeText(text);
   window.open("https://www.instagram.com/daggerdick_77/");
 }
 
