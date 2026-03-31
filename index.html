@@ -15,12 +15,39 @@ body {
   font-family:'Unbounded', sans-serif;
 }
 
+/* HEADER */
 header {
   text-align:center;
   padding:30px;
   border-bottom:1px solid #222;
 }
 
+header h1 {
+  letter-spacing:4px;
+}
+
+/* FILTER NAV */
+.nav {
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  padding:20px;
+  border-bottom:1px solid #222;
+}
+
+.nav button {
+  background:none;
+  border:none;
+  color:#888;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.nav button.active {
+  color:#fff;
+}
+
+/* GRID */
 .container {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -33,6 +60,7 @@ header {
   border:1px solid #222;
   cursor:pointer;
   transition:0.3s;
+  position:relative;
 }
 
 .card:hover {
@@ -48,6 +76,7 @@ header {
 
 .card-content {
   padding:20px;
+  font-size:13px;
 }
 
 .price {
@@ -55,16 +84,28 @@ header {
   font-size:12px;
 }
 
+/* BADGES */
+.badge {
+  position:absolute;
+  top:10px;
+  left:10px;
+  font-size:10px;
+  padding:5px 8px;
+  border:1px solid #fff;
+}
+
+.sold { border-color:red; color:red; }
+.new { border-color:white; }
+.next { border-color:#555; color:#777; }
+
 /* MODAL */
 .modal {
   display:none;
   position:fixed;
-  top:0;
-  left:0;
   width:100%;
   height:100%;
   background:#000;
-  overflow-y:auto;
+  overflow:auto;
 }
 
 .modal img {
@@ -76,33 +117,24 @@ header {
   position:fixed;
   top:20px;
   right:20px;
-  font-size:20px;
   cursor:pointer;
 }
 
-/* BUY BUTTON */
+/* BUTTON */
 .buy-btn {
   display:block;
-  text-align:center;
+  margin:20px;
   padding:15px;
   border:1px solid #fff;
-  margin:20px;
-  text-decoration:none;
-  color:#fff;
-  transition:0.3s;
+  text-align:center;
+  cursor:pointer;
 }
 
-.buy-btn:hover {
-  background:#fff;
-  color:#000;
-}
-
-/* FAKE DM BOX */
+/* DM BOX */
 .dm-box {
   margin:20px;
-  padding:15px;
+  padding:10px;
   border:1px solid #333;
-  background:#111;
   font-size:12px;
   color:#aaa;
 }
@@ -114,28 +146,45 @@ header {
 <header>
 <h1>VAMP SELECTION</h1>
 <p>
-DM to purchase → 
-<a href="https://www.instagram.com/daggerdick_77/" target="_blank" style="color:#aaa;">
-@daggerdick_77
-</a>
+DM → <a href="https://www.instagram.com/daggerdick_77/" target="_blank" style="color:#aaa;">@daggerdick_77</a>
 </p>
 </header>
 
+<!-- FILTER -->
+<div class="nav">
+  <button onclick="filter('all')" class="active">ALL</button>
+  <button onclick="filter('new')">NEW DROP</button>
+  <button onclick="filter('sold')">SOLD OUT</button>
+  <button onclick="filter('next')">NEXT DROP</button>
+</div>
+
+<!-- PRODUCTS -->
 <section class="container">
 
-<div class="card" onclick="openModal('rick')">
+<div class="card new" data-type="new" onclick="openModal('rick')">
+  <div class="badge new">NEW</div>
   <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">
   <div class="card-content">
-    RICK OWENS ジオバスケット BLACK MILK
+    RICK OWENS GEOBASKET
     <div class="price">¥120,000</div>
   </div>
 </div>
 
-<div class="card" onclick="openModal('balenciaga')">
+<div class="card sold" data-type="sold">
+  <div class="badge sold">SOLD OUT</div>
   <img src="https://balenciaga.dam.kering.com/m/2d3e9f1f6e0f7a0f/Medium-677390W2F701000_F.jpg">
   <div class="card-content">
-    BALENCIAGA FURRY ミュール
+    BALENCIAGA FURRY MULE
     <div class="price">¥95,000</div>
+  </div>
+</div>
+
+<div class="card next" data-type="next">
+  <div class="badge next">NEXT DROP</div>
+  <img src="https://images.stockx.com/images/Rick-Owens-Ramones.png">
+  <div class="card-content">
+    RICK OWENS RAMONES
+    <div class="price">COMING SOON</div>
   </div>
 </div>
 
@@ -146,34 +195,41 @@ DM to purchase →
   <span class="close" onclick="closeModal()">✕</span>
   <div id="modalContent"></div>
 
-  <!-- Fake DM Preview -->
   <div id="dmPreview" class="dm-box"></div>
 
-  <a class="buy-btn" onclick="buyNow()">
-    SEND DM
-  </a>
+  <div class="buy-btn" onclick="buyNow()">SEND DM</div>
 </div>
 
 <script>
 let currentProduct = "";
 
+/* FILTER */
+function filter(type) {
+  let cards = document.querySelectorAll(".card");
+  let buttons = document.querySelectorAll(".nav button");
+
+  buttons.forEach(btn => btn.classList.remove("active"));
+  event.target.classList.add("active");
+
+  cards.forEach(card => {
+    if(type === "all" || card.dataset.type === type) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+  });
+}
+
+/* MODAL */
 function openModal(product) {
   const modal = document.getElementById("modal");
   const content = document.getElementById("modalContent");
   const preview = document.getElementById("dmPreview");
 
   if(product === 'rick') {
-    currentProduct = "RICK OWENS GEOBASKET BLACK MILK";
+    currentProduct = "RICK OWENS GEOBASKET";
     content.innerHTML = `
       <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk.png">
-      <img src="https://images.stockx.com/images/Rick-Owens-Geobasket-Black-Milk-Product.jpg">
-    `;
-  }
-
-  if(product === 'balenciaga') {
-    currentProduct = "BALENCIAGA FURRY MULE";
-    content.innerHTML = `
-      <img src="https://balenciaga.dam.kering.com/m/2d3e9f1f6e0f7a0f/Medium-677390W2F701000_F.jpg">
     `;
   }
 
@@ -182,10 +238,11 @@ function openModal(product) {
   modal.style.display = "block";
 }
 
+/* BUY */
 function buyNow() {
-  const message = "I want to buy: " + currentProduct;
+  const msg = "I want to buy: " + currentProduct;
 
-  navigator.clipboard.writeText(message).then(() => {
+  navigator.clipboard.writeText(msg).then(() => {
     window.open("https://www.instagram.com/daggerdick_77/", "_blank");
   });
 }
