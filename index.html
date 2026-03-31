@@ -28,7 +28,6 @@ body {
   background-size:cover;
 }
 
-/* subtle grain */
 body::after{
   content:"";
   position:fixed;
@@ -52,14 +51,14 @@ body::after{
   align-items:center;
   justify-content:center;
   z-index:9999;
-  flex-direction:column;
 }
 
 .blood{
   color:#8b0000;
-  font-size:24px;
-  letter-spacing:8px;
+  font-size:26px;
+  letter-spacing:10px;
   animation:pulse 1.6s infinite;
+  text-shadow:0 0 8px #8b0000, 0 0 20px #4b0000;
 }
 
 @keyframes pulse{
@@ -74,6 +73,50 @@ body::after{
 }
 
 /* =========================
+   ☰ MENU BUTTON
+========================= */
+
+.menu-btn{
+  position:absolute;
+  left:20px;
+  top:30px;
+  font-size:20px;
+  cursor:pointer;
+}
+
+/* =========================
+   📂 SIDE MENU
+========================= */
+
+.side-menu{
+  position:fixed;
+  top:0;
+  left:-100%;
+  width:260px;
+  height:100%;
+  background:#0a0a0a;
+  padding:40px 20px;
+  transition:0.5s;
+  z-index:4000;
+}
+
+.side-menu.active{
+  left:0;
+}
+
+.side-menu a{
+  display:block;
+  margin:20px 0;
+  text-decoration:none;
+  color:#aaa;
+  font-size:14px;
+}
+
+.side-menu a:hover{
+  color:#fff;
+}
+
+/* =========================
    🧠 HEADER
 ========================= */
 
@@ -81,13 +124,18 @@ header{
   text-align:center;
   padding:30px 20px;
   border-bottom:1px solid rgba(255,255,255,0.08);
-  backdrop-filter:blur(4px);
+  position:relative;
 }
 
+/* 🩸 AGGRESSIVE TITLE */
 header h1{
-  font-size:18px;
+  font-size:20px;
   letter-spacing:6px;
-  font-weight:500;
+  color:#b30000;
+  text-shadow:
+    0 0 5px #ff0000,
+    0 0 15px #8b0000,
+    0 0 30px #4b0000;
 }
 
 /* =========================
@@ -101,55 +149,26 @@ header h1{
   padding:50px 20px;
 }
 
-/* =========================
-   🪦 PRODUCT CARD
-========================= */
-
-.card{
-  cursor:pointer;
-  transition:0.4s ease;
-}
-
-.card:hover{
-  transform:translateY(-4px);
-}
-
+/* CARD */
+.card{ cursor:pointer; }
 .card img{
   width:100%;
   height:250px;
   object-fit:cover;
-  filter:contrast(1.05);
 }
 
-.name{
-  margin-top:14px;
-  font-size:13px;
-  letter-spacing:1px;
-}
+.name{ margin-top:14px; font-size:13px; }
+.price{ font-size:12px; color:#777; }
+.stock{ font-size:11px; color:#b30000; }
 
-.price{
-  font-size:12px;
-  color:#777;
-}
-
-.stock{
-  font-size:11px;
-  color:#b30000;
-}
-
-/* =========================
-   🩸 MODAL
-========================= */
-
+/* MODAL */
 #modal{
   position:fixed;
   bottom:-100%;
-  left:0;
   width:100%;
   height:100%;
   background:rgba(0,0,0,0.97);
-  backdrop-filter:blur(12px);
-  transition:0.6s cubic-bezier(0.22,1,0.36,1);
+  transition:0.6s;
   z-index:2000;
   padding-top:70px;
   pointer-events:none;
@@ -160,149 +179,87 @@ header h1{
   pointer-events:auto;
 }
 
-/* =========================
-   ❌ CLOSE BUTTON
-========================= */
-
+/* CLOSE */
 .close{
   position:fixed;
   top:70px;
   right:20px;
   font-size:24px;
-  padding:10px 14px;
-  background:rgba(0,0,0,0.6);
-  border-radius:10px;
-  backdrop-filter:blur(6px);
   cursor:pointer;
   z-index:3000;
 }
 
-/* =========================
-   🖼️ GALLERY
-========================= */
-
-.gallery{
-  position:relative;
-  overflow:hidden;
-}
-
-.gallery-track{
-  display:flex;
-  transition:transform 0.6s cubic-bezier(0.22,1,0.36,1);
-}
-
+/* GALLERY */
+.gallery{ overflow:hidden; position:relative; }
+.gallery-track{ display:flex; transition:0.6s; }
 .gallery img{
   width:100%;
   flex:0 0 100%;
   opacity:0.6;
   filter:blur(6px);
-  transform:scale(1.06);
-  transition:all 0.8s ease;
 }
-
 .gallery img.active{
   opacity:1;
   filter:blur(0);
-  transform:scale(1);
 }
 
-/* =========================
-   ⬅️➡️ ARROWS
-========================= */
-
+/* ARROWS */
 .arrow{
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-  font-size:20px;
   background:rgba(0,0,0,0.5);
-  padding:10px 14px;
+  padding:8px;
   cursor:pointer;
-  z-index:10;
 }
-
 .arrow.left{ left:10px; }
 .arrow.right{ right:10px; }
 
-/* =========================
-   ⚪ DOTS
-========================= */
-
-.dots{
-  text-align:center;
-  margin-top:12px;
-}
-
+/* DOTS */
+.dots{text-align:center;}
 .dot{
-  display:inline-block;
   width:6px;
   height:6px;
-  margin:6px;
   background:#444;
+  display:inline-block;
+  margin:5px;
   border-radius:50%;
-  transition:all 0.4s;
 }
-
 .dot.active{
-  width:18px;
+  width:16px;
   background:#fff;
-  border-radius:10px;
 }
 
-/* =========================
-   📩 DM SECTION
-========================= */
-
-#dmPreview{
-  margin:25px;
-  font-size:12px;
-  color:#aaa;
-  line-height:1.6;
-}
-
+/* DM */
+#dmPreview{ margin:20px; font-size:12px; color:#aaa; }
 .buy-btn{
   margin:20px;
-  padding:16px;
+  padding:15px;
   border:1px solid #fff;
   text-align:center;
   cursor:pointer;
-  transition:0.3s;
 }
 
-.buy-btn:hover{
-  background:#fff;
-  color:#000;
-}
-
-/* =========================
-   📱 INSTAGRAM
-========================= */
-
+/* INSTAGRAM */
 .insta{
   margin:80px 0;
   text-align:center;
   font-size:12px;
-  color:#777;
-}
-
-.insta a{
-  display:inline-block;
-  margin-top:12px;
-  padding:12px 24px;
-  border:1px solid #fff;
-  text-decoration:none;
-  color:#fff;
-}
-
-.insta a:hover{
-  background:#fff;
-  color:#000;
 }
 
 </style>
 </head>
 
 <body>
+
+<!-- MENU -->
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+<div class="side-menu" id="menu">
+  <a href="#">Home</a>
+  <a href="#">Archive</a>
+  <a href="#">Contact</a>
+</div>
 
 <!-- LOADER -->
 <div id="loader">
@@ -331,13 +288,10 @@ header h1{
 </section>
 
 <div class="insta">
-  ARCHIVE ENERGY — FOLLOW FOR MORE<br>
-  <a href="https://www.instagram.com/daggerdick_77/" target="_blank">
-    Instagram ↗
-  </a>
+  FOLLOW FOR MORE<br>
+  <a href="https://www.instagram.com/daggerdick_77/" target="_blank">Instagram</a>
 </div>
 
-<!-- MODAL -->
 <div id="modal">
   <div class="close" onclick="closeModal()">❌</div>
   <div id="modalContent"></div>
@@ -347,22 +301,24 @@ header h1{
 
 <script>
 
+/* MENU */
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("active");
+}
+
 /* LOADER */
-window.onload = () => {
-  setTimeout(()=>{
-    document.getElementById("loader").classList.add("hide");
-  },1200);
+window.onload=()=>{
+  setTimeout(()=>loader.classList.add("hide"),1200);
 };
 
 let currentProduct="";
 let currentIndex=0;
 let totalImages=0;
 
-/* OPEN */
 function openModal(product){
 
   if(product==="rick"){
-    currentProduct="Rick Owens Geobasket Black Milk";
+    currentProduct="Rick Owens Geobasket";
     totalImages=2;
     modalContent.innerHTML=createGallery([
       "IMG_0653.webp",
@@ -371,7 +327,7 @@ function openModal(product){
   }
 
   if(product==="balenciaga"){
-    currentProduct="Balenciaga Furry Mule";
+    currentProduct="Balenciaga Mule";
     totalImages=2;
     modalContent.innerHTML=createGallery([
       "IMG_0663.jpeg",
@@ -382,30 +338,25 @@ function openModal(product){
   currentIndex=0;
   setTimeout(updateGallery,50);
 
-  dmPreview.innerText="Message:\nI want to buy: "+currentProduct;
-
-  document.getElementById("modal").classList.add("active");
+  dmPreview.innerText="I want to buy: "+currentProduct;
+  modal.classList.add("active");
 }
 
-/* GALLERY */
 function createGallery(images){
   return `
     <div class="gallery">
       <div class="gallery-track" id="track">
         ${images.map(img=>`<img src="${img}">`).join("")}
       </div>
-
       <div class="arrow left" onclick="prev()">←</div>
       <div class="arrow right" onclick="next()">→</div>
     </div>
-
     <div class="dots">
       ${images.map((_,i)=>`<span class="dot" id="dot${i}"></span>`).join("")}
     </div>
   `;
 }
 
-/* UPDATE */
 function updateGallery(){
   const track=document.getElementById("track");
   const images=document.querySelectorAll("#track img");
@@ -422,7 +373,6 @@ function updateGallery(){
   document.getElementById("dot"+currentIndex).classList.add("active");
 }
 
-/* NAV */
 function next(){
   if(currentIndex<totalImages-1){
     currentIndex++;
@@ -437,21 +387,12 @@ function prev(){
   }
 }
 
-/* CLOSE */
 function closeModal(){
-  const modal=document.getElementById("modal");
   modal.classList.remove("active");
-
-  setTimeout(()=>{
-    modalContent.innerHTML="";
-    dmPreview.innerText="";
-  },300);
 }
 
-/* BUY */
 function buyNow(){
-  const text="I want to buy: "+currentProduct;
-  navigator.clipboard.writeText(text);
+  navigator.clipboard.writeText("I want to buy: "+currentProduct);
   window.open("https://www.instagram.com/daggerdick_77/");
 }
 
